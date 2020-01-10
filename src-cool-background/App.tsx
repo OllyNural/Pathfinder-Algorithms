@@ -1,16 +1,18 @@
 import React from 'react';
 import './App.css';
 
-// import GridContext from '../src-konva/GridContext'
+import GridContext from './GridContext'
 import Grid from './Grid'
 
 const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        Pathfinder
+        Hello
       </header>
+      <GridContext.Provider value={0}>
         <Grid />
+      </GridContext.Provider>
     </div>
   );
 }
