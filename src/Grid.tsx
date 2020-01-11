@@ -9,7 +9,7 @@ const gridHeightRatio = 0.9
 const gridHeight: number = Math.floor(window.innerHeight * gridHeightRatio)
 const gridWidth: number = window.innerWidth
 
-const numX: number = Math.floor(gridHeight / rectDiameter)
+const numX: number = Math.floor(gridHeight / rectDiameter) + 1
 const numY: number = Math.floor(gridWidth / rectDiameter)
 
 let startX: number = Math.floor(numX * 0.5)
@@ -101,7 +101,6 @@ const Grid: React.FC = () => {
         setMovingStart(false)
         setMovingEnd(false)
         prevWallState = 1
-        console.log(values)
     }
 
     const handleHover = (x: number, y: number) => {

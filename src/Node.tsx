@@ -20,19 +20,18 @@ type CardProps = {
 
 const GridRect: React.FC<CardProps> = ({ x, y, d, state, onMouseDown, onMouseUp, onHover }) => {
 
-    const className =
+    let nodeStyleClassName =
         state === 0 ? ''
             : state === 1 ? 'node-wall'
                 : state === 3 ? 'node-start'
                     : 'node-finish'
 
+        nodeStyleClassName += ' node'
+
     const baseStyle = {
         height: d,
         width: d,
-        boxSizing: 'border-box' as 'border-box',
-        border: '1px grey solid',
-        margin: 0,
-        padding: 0,
+        border: state !== 0 ? 'none' : '1px rgb(152, 152, 152) solid',
     };
 
     return (
@@ -42,7 +41,7 @@ const GridRect: React.FC<CardProps> = ({ x, y, d, state, onMouseDown, onMouseUp,
             onMouseDown={() => onMouseDown(x, y)}
             onMouseUp={() => onMouseUp(x, y)}
             onMouseEnter={() => onHover(x, y)}
-            className={className}
+            className={nodeStyleClassName}
         >
 
         </div>

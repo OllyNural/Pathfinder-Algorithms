@@ -5,4 +5,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
+    /* overflow: hidden; */
+    overflow-x: hidden;
+    overflow-y: hidden;
 }

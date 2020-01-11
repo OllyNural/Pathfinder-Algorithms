@@ -1,11 +1,23 @@
 .node-wall {
-    background: grey;
+    background: #2d4365;
 }
 
 .node-start {
-    background: green
+    background: #58b368;
 }
 
 .node-finish {
-    background: red
+    background: #eb4d55;
 }
+
+.node {
+    box-sizing: border-box;
+    border: 1px rgb(152, 152, 152) solid;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* All code sounds smart when you personalise it and talk about it in the third person: (Talking about a Node on a Grid)
+
+'When you drop it on the grid, it automatically frees up a place for itself.,' */
