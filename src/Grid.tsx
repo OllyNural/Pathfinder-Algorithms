@@ -12,10 +12,12 @@ const gridWidth: number = window.innerWidth
 const numX: number = Math.floor(gridHeight / rectDiameter)
 const numY: number = Math.floor(gridWidth / rectDiameter)
 
-let startX = Math.floor(numX * 0.5)
-let startY = Math.floor(numY * 0.25)
-let endX = Math.floor(numX * 0.5)
-let endY = Math.floor(numY * 0.75)
+let startX: number = Math.floor(numX * 0.5)
+let startY: number = Math.floor(numY * 0.25)
+let endX: number = Math.floor(numX * 0.5)
+let endY: number = Math.floor(numY * 0.75)
+
+let prevWallState: number = 1
 
 const tempGrid: number[][] = [...Array(numX)].map((val, i) => [...Array(numY)].map((val, j) => {
     const newValue = (i === startX && j === startY) ?
@@ -98,6 +100,7 @@ const Grid: React.FC = () => {
         setMousePressed(false)
         setMovingStart(false)
         setMovingEnd(false)
+        prevWallState = 1
         console.log(values)
     }
 
@@ -105,15 +108,17 @@ const Grid: React.FC = () => {
         if (!isMousePressedRef.current) return
         if (isMovingStartRef.current) {
             if (x === endX && y === endY) return
-
-            updateWallValuesPosition(startX, startY, 1)
+            
+            updateWallValuesPosition(startX, startY, prevWallState)
+            prevWallState = values[x][y] === 1 ? 0 : 1
             setValuesWithNumber(x, y, 3)
             startX = x
             startY = y
         } else if (isMovingEndRef.current) {
             if (x === startX && y === startY) return
 
-            updateWallValuesPosition(endX, endY, 1)
+            updateWallValuesPosition(endX, endY, prevWallState)
+            prevWallState = values[x][y] === 1 ? 0 : 1
             setValuesWithNumber(x, y, 4)
             endX = x
             endY = y
