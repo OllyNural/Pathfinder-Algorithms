@@ -10,6 +10,13 @@ type DObj = {
     y: number,
 }
 
+const dirs = [
+    (x: number, y: number) => ({ x: x - 1, y }), // North
+    (x: number, y: number) => ({ x, y: y + 1 }), // East
+    (x: number, y: number) => ({ x: x + 1, y }), // South
+    (x: number, y: number) => ({ x, y: y - 1 }), // West
+]
+
 const sortUnvisitedNodes = (first: DObj, second: DObj) => {
     if (first.distance > second.distance) return -1
     return 1
@@ -24,30 +31,36 @@ const findStartIndex = (grid: DObj[][]) => {
     return { x: 0, y: 0 }
 }
 
+const findSurroundingNodes = (grid: DObj[][], currentNode: DObj) => {
+
+    
+}
+
 const dijkstraMain = (dirtyGrid: number[][]) => {
-    const grid: DObj[][] = transformer(dirtyGrid);
-    const unvisitedNodes = []
+    const grid: DObj[][] = transformer(dirtyGrid)
+    const unvisitedNodes: DObj[] = []
     const nodesTraversed = []
-    // Get current coords
     const { x, y }: { x: number, y: number } = findStartIndex(grid)
-    // set current coords as visited
     grid[x][y].hasVisited = true
     unvisitedNodes.push(grid[x][y])
-    unvisitedNodes.push(grid[0][0])
     while (unvisitedNodes.length > 0) {
-        console.log('hi')
-        console.log(unvisitedNodes)
-        unvisitedNodes.sort(sortUnvisitedNodes)
-        console.log(unvisitedNodes)
-
+        console.log('--------------------')
         const currentNode = unvisitedNodes.pop()
-        
-        
-        
+        console.log('currentNode', currentNode)
+        currentNode.hasVisited = true
         nodesTraversed.push(currentNode)
+
+        dirs.forEach((getNewCoords) => {
+            const {x, y} : {x: number, y: number} = getNewCoords(currentNode.x, currentNode.y)
+            if (grid[x] && grid[x][y] && grid[x][y].value !== 1 && grid[x][y].hasVisited === false) {
+                unvisitedNodes.push(grid[x][y])
+            }
+        })
+
+        unvisitedNodes.sort(sortUnvisitedNodes)
+        console.log(grid)
+        console.log('unvisited nodes', unvisitedNodes)
     }
-    // console.log(x, y)
-    // console.log(grid)
 
     return grid
 }
@@ -56,4 +69,5 @@ export {
     dijkstraMain,
     findStartIndex,
     sortUnvisitedNodes,
+    findSurroundingNodes,
 }
