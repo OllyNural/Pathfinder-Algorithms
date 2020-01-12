@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+/// <reference path="types/normalised.d.ts" />
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Node from './Node'
 
 import './Grid.css';
@@ -25,12 +27,18 @@ const tempGrid: number[][] = [...Array(numX)].map((val, i) => [...Array(numY)].m
     return newValue
 }));
 
-const Grid: React.FC = () => {
+type GridProps = {
+    setGrid: (values: number[][]) => void,
+    solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] },
+}
+
+const Grid: React.FC<GridProps> = ({ setGrid, solution }) => {
     /**
      * STATES
      */
     const [grid] = useState(tempGrid)
     const [values, setValues] = useState(tempGrid);
+    setGrid(values)
 
     const [isMovingStart, setMovingStart] = useState(false)
     const isMovingStartRef = useRef(isMovingStart)
@@ -56,11 +64,41 @@ const Grid: React.FC = () => {
         nodeTypePointerRef.current = nodeTypePointer
     })
 
-    const setValuesWithNumber = (x: number, y: number, value: number) => {
-        let newValuesGrid: number[][] = [...values];
-        newValuesGrid[x][y] = value;
-        setValues(newValuesGrid);
-    }
+    const setValuesWithNumber = useCallback(
+        (x: number, y: number, value: number) => {
+            let newValuesGrid: number[][] = [...values];
+            newValuesGrid[x][y] = value;
+            setValues(newValuesGrid);
+        }, []
+    )
+
+    const animateShortestPath = useCallback(
+        (shortestPath: Normalised[]) => {
+            shortestPath.forEach((e, i) => {
+                setTimeout(() => {
+                    setValuesWithNumber(e.x, e.y, 6)
+                    console.log(values)
+                }, 25 * i)
+            })
+        },
+        [],
+    )
+
+    useEffect(() => {
+        const { nodesTraversed, shortestPath }: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = solution
+        if (!nodesTraversed || !shortestPath) return 
+        nodesTraversed.forEach((e, i) => {
+            if (i === nodesTraversed.length - 1) {
+                console.log('hit final one')
+                setTimeout(() => {
+                    animateShortestPath(shortestPath)
+                }, 15 * i)
+            }
+            setTimeout(() => {
+                setValuesWithNumber(e.x, e.y, 5)
+            }, 15 * i)
+        });
+    }, [solution, setValuesWithNumber, animateShortestPath])
 
     const updateWallValuesPosition = (x: number, y: number, currentTypeNode?: number) => {
         let newValue: number = 0
@@ -101,13 +139,14 @@ const Grid: React.FC = () => {
         setMovingStart(false)
         setMovingEnd(false)
         prevWallState = 1
+        setGrid(values)
     }
 
     const handleHover = (x: number, y: number) => {
         if (!isMousePressedRef.current) return
         if (isMovingStartRef.current) {
             if (x === endX && y === endY) return
-            
+
             updateWallValuesPosition(startX, startY, prevWallState)
             prevWallState = values[x][y] === 1 ? 0 : 1
             setValuesWithNumber(x, y, 3)

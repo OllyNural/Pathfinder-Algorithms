@@ -10,6 +10,14 @@
     background: #eb4d55;
 }
 
+.node-traversed-path {
+    background: #A2C5AC;
+}
+
+.node-shortest-path {
+    background: #58179E;
+}
+
 .node {
     box-sizing: border-box;
     border: 1px rgb(152, 152, 152) solid;

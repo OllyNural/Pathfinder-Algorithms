@@ -1,19 +1,36 @@
-import { dijkstraMain, findStartIndex, sortUnvisitedNodes, findSurroundingNodes } from './dijkstra'
-import { data, transformedData, transformedDataNoStart } from './mocks/dijkstra'
+import { dijkstra, findIndexFromValue, sortUnvisitedNodes, findShortestPath } from './dijkstra'
+import {
+    data,
+    transformedData,
+    transformedDataNoStart,
+    transformedDataNoEnd,
+    transformedDataSolved,
+    transformedDataShortestPath,
+    nodesTraversed,
+    transformedDataShortestPathOutput
+} from './mocks/dijkstra'
 
-describe('dijkstraMain', () => {
+describe('dijkstra', () => {
     it('Should transform correctly', () => {
-        expect(dijkstraMain(data)).toEqual(transformedData)
+        expect(dijkstra(data)).toEqual({ nodesTraversed: nodesTraversed, shortestPath: transformedDataShortestPathOutput })
     })
 })
 
-describe('findStartIndex', () => {
+describe('findIndexFromValue', () => {
     it('Should find the start index correctly', () => {
-        expect(findStartIndex(transformedData)).toEqual({ x: 2, y: 2 })
+        expect(findIndexFromValue(transformedData, 3)).toEqual({ x: 2, y: 2 })
+    })
+
+    it('Should find the end index correctly', () => {
+        expect(findIndexFromValue(transformedData, 4)).toEqual({ x: 0, y: 1 })
     })
 
     it('Should return 0, 0 if no start index is provided', () => {
-        expect(findStartIndex(transformedDataNoStart)).toEqual({ x: 0, y: 0 })
+        expect(findIndexFromValue(transformedDataNoStart, 3)).toEqual({ x: 0, y: 0 })
+    })
+
+    it('Should return 0, 0 if no end index is provided', () => {
+        expect(findIndexFromValue(transformedDataNoEnd, 4)).toEqual({ x: 0, y: 0 })
     })
 })
 
@@ -29,9 +46,8 @@ describe('sortUnvisitedNodes', () => {
     })
 })
 
-describe('findSurroundingNodes', () => {
-    it('Should find surrounding nodes correctly', () => {
-        const currentNode = { value: 3, distance: 0, hasVisited: true, x: 2, y: 2 }
-        expect(findSurroundingNodes(transformedData, currentNode)).toHaveLength(1)
+describe('findShortestPath', () => {
+    it('Should find the shortest path from start to end', () => {
+        expect(findShortestPath(transformedDataSolved)).toEqual(transformedDataShortestPath)
     })
 })

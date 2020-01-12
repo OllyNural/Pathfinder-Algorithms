@@ -2,12 +2,6 @@ import React, { memo } from 'react';
 
 import './Node.css'
 
-/**
- * 0: empty
- * 1: wall
- * 2: start
- * 3: end
- */
 type CardProps = {
     x: number,
     y: number,
@@ -23,8 +17,10 @@ const GridRect: React.FC<CardProps> = ({ x, y, d, state, onMouseDown, onMouseUp,
     let nodeStyleClassName =
         state === 0 ? ''
             : state === 1 ? 'node-wall'
-                : state === 3 ? 'node-start'
-                    : 'node-finish'
+            : state === 3 ? 'node-start'
+            : state === 4 ? 'node-finish'
+            : state === 5 ? 'node-traversed-path'
+            : 'node-shortest-path'
 
         nodeStyleClassName += ' node'
 
