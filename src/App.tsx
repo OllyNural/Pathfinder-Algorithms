@@ -1,7 +1,7 @@
 /// <reference path="types/dijkstra.d.ts" />
 /// <reference path="types/normalised.d.ts" />
 
-import React, { useState } from 'react';
+import React, { useState, SetStateAction, Dispatch } from 'react';
 import './App.css';
 
 import { dijkstra } from './algorithms'
@@ -17,6 +17,7 @@ const App: React.FC = () => {
 
   const [grid, setGrid] = useState()
   const [solution, setSolution] = useState(defaultEmptySolution)
+  const [colourScheme, setColourScheme]: [string, Dispatch<SetStateAction<string>>] = useState('dark')
 
   const runAlgorithm = () => {
     const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = dijkstra(grid)
@@ -29,7 +30,11 @@ const App: React.FC = () => {
         Pathfinder
       </header>
       <button onClick={runAlgorithm}> Run algorithm </button>
-      <Grid setGrid={(values: number[][]) => setGrid(values)} solution={solution} />
+      <button onClick={() => setColourScheme('dark')}>Set Colour scheme dark</button>
+      <Grid 
+        colourScheme={colourScheme}
+        setGrid={(values: number[][]) => setGrid(values)} 
+        solution={solution} />
     </div>
   );
 }

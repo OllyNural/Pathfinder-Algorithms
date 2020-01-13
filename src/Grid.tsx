@@ -30,9 +30,10 @@ const tempGrid: number[][] = [...Array(numX)].map((val, i) => [...Array(numY)].m
 type GridProps = {
     setGrid: (values: number[][]) => void,
     solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] },
+    colourScheme: string,
 }
 
-const Grid: React.FC<GridProps> = ({ setGrid, solution }) => {
+const Grid: React.FC<GridProps> = ({ setGrid, solution, colourScheme }) => {
     /**
      * STATES
      */
@@ -66,6 +67,7 @@ const Grid: React.FC<GridProps> = ({ setGrid, solution }) => {
 
     const setValuesWithNumber = useCallback(
         (x: number, y: number, value: number) => {
+            // console.log('setValuesWithNumber')
             let newValuesGrid: number[][] = [...values];
             newValuesGrid[x][y] = value;
             setValues(newValuesGrid);
@@ -74,31 +76,51 @@ const Grid: React.FC<GridProps> = ({ setGrid, solution }) => {
 
     const animateShortestPath = useCallback(
         (shortestPath: Normalised[]) => {
+            // console.log('animateShortestPath')
             shortestPath.forEach((e, i) => {
                 setTimeout(() => {
-                    setValuesWithNumber(e.x, e.y, 6)
-                    console.log(values)
+                    if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
+                        setValuesWithNumber(e.x, e.y, 6)
+                    }
+                    // console.log(values)
                 }, 25 * i)
             })
         },
         [],
     )
 
+    const cleanGrid = () => {
+        // console.log('cleaning grid')
+        let newValuesGrid = values.map((row, i) => row.map((val, j) => {
+            const curr = values[i][j]
+            if (curr !== 3 && curr !== 4 && curr !== 1) return 0
+            return curr
+        }))
+
+        // console.log(newValuesGrid)
+        setValues(newValuesGrid)
+    }
+
     useEffect(() => {
+        // console.log('useEffect')
+        cleanGrid()
         const { nodesTraversed, shortestPath }: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = solution
         if (!nodesTraversed || !shortestPath) return 
+
         nodesTraversed.forEach((e, i) => {
             if (i === nodesTraversed.length - 1) {
-                console.log('hit final one')
                 setTimeout(() => {
                     animateShortestPath(shortestPath)
-                }, 15 * i)
+                }, 25 * i)
             }
             setTimeout(() => {
-                setValuesWithNumber(e.x, e.y, 5)
-            }, 15 * i)
+                if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
+                    setValuesWithNumber(e.x, e.y, 5)
+                }
+            }, 25 * i)
         });
     }, [solution, setValuesWithNumber, animateShortestPath])
+  
 
     const updateWallValuesPosition = (x: number, y: number, currentTypeNode?: number) => {
         let newValue: number = 0
@@ -179,6 +201,7 @@ const Grid: React.FC<GridProps> = ({ setGrid, solution }) => {
                                 y={j}
                                 d={rectDiameter}
                                 state={state}
+                                colourTheme={colourScheme}
                                 onMouseDown={handleMouseDown}
                                 onMouseUp={handleMouseUp}
                                 onHover={handleHover}

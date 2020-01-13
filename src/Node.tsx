@@ -7,27 +7,46 @@ type CardProps = {
     y: number,
     d: number,
     state: number,
+    colourTheme: string,
     onMouseDown: (x: number, y: number) => void,
     onMouseUp: (x: number, y: number) => void,
-    onHover: (x: number, y: number) => void
+    onHover: (x: number, y: number) => void,
 }
 
-const GridRect: React.FC<CardProps> = ({ x, y, d, state, onMouseDown, onMouseUp, onHover }) => {
+const GridRect: React.FC<CardProps> = ({ x, y, d, state, colourTheme, onMouseDown, onMouseUp, onHover }) => {
 
-    let nodeStyleClassName =
-        state === 0 ? ''
-            : state === 1 ? 'node-wall'
-            : state === 3 ? 'node-start'
-            : state === 4 ? 'node-finish'
-            : state === 5 ? 'node-traversed-path'
-            : 'node-shortest-path'
+    let nodeStyleClassName: string
 
-        nodeStyleClassName += ' node'
+    // console.log(colourTheme)
+
+    if (colourTheme === 'light') {
+        // Light Colour Theme
+        nodeStyleClassName =
+            state === 0 ? ''
+                : state === 1 ? 'node-wall-light'
+                : state === 3 ? 'node-start-light'
+                : state === 4 ? 'node-finish-light'
+                : state === 5 ? 'node-traversed-path-light'
+                : 'node-shortest-path-light'
+
+        nodeStyleClassName += ' node-light'
+
+    } else {
+        // Dark Colour Theme
+        nodeStyleClassName =
+            state === 0 ? ''
+                : state === 1 ? 'node-wall-dark'
+                : state === 3 ? 'node-start-dark'
+                : state === 4 ? 'node-finish-dark'
+                : state === 5 ? 'node-traversed-path-dark'
+                : 'node-shortest-path-dark'
+
+        nodeStyleClassName += ' node-dark'
+    }
 
     const baseStyle = {
         height: d,
         width: d,
-        border: state !== 0 ? 'none' : '1px rgb(152, 152, 152) solid',
     };
 
     return (
@@ -47,6 +66,6 @@ const GridRect: React.FC<CardProps> = ({ x, y, d, state, onMouseDown, onMouseUp,
 export default memo(
     GridRect, 
     (prevProps: Readonly<any>, nextProps: Readonly<any>) => {
-        return prevProps.state === nextProps.state
+        return prevProps.state === nextProps.state && prevProps.colourTheme === nextProps.colourTheme
     }
 )
