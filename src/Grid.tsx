@@ -30,10 +30,10 @@ const tempGrid: number[][] = [...Array(numX)].map((val, i) => [...Array(numY)].m
 type GridProps = {
     setGrid: (values: number[][]) => void,
     solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] },
-    colourScheme: string,
+    darkTheme: boolean,
 }
 
-const Grid: React.FC<GridProps> = ({ setGrid, solution, colourScheme }) => {
+const Grid: React.FC<GridProps> = ({ setGrid, solution, darkTheme }) => {
     /**
      * STATES
      */
@@ -103,7 +103,7 @@ const Grid: React.FC<GridProps> = ({ setGrid, solution, colourScheme }) => {
 
     useEffect(() => {
         // console.log('useEffect')
-        cleanGrid()
+        // cleanGrid()
         const { nodesTraversed, shortestPath }: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = solution
         if (!nodesTraversed || !shortestPath) return 
 
@@ -117,7 +117,7 @@ const Grid: React.FC<GridProps> = ({ setGrid, solution, colourScheme }) => {
                 if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
                     setValuesWithNumber(e.x, e.y, 5)
                 }
-            }, 25 * i)
+            }, 10 * i)
         });
     }, [solution, setValuesWithNumber, animateShortestPath])
   
@@ -201,7 +201,7 @@ const Grid: React.FC<GridProps> = ({ setGrid, solution, colourScheme }) => {
                                 y={j}
                                 d={rectDiameter}
                                 state={state}
-                                colourTheme={colourScheme}
+                                darkTheme={darkTheme}
                                 onMouseDown={handleMouseDown}
                                 onMouseUp={handleMouseUp}
                                 onHover={handleHover}

@@ -7,31 +7,19 @@ type CardProps = {
     y: number,
     d: number,
     state: number,
-    colourTheme: string,
+    darkTheme: boolean,
     onMouseDown: (x: number, y: number) => void,
     onMouseUp: (x: number, y: number) => void,
     onHover: (x: number, y: number) => void,
 }
 
-const GridRect: React.FC<CardProps> = ({ x, y, d, state, colourTheme, onMouseDown, onMouseUp, onHover }) => {
+const GridRect: React.FC<CardProps> = ({ x, y, d, state, darkTheme, onMouseDown, onMouseUp, onHover }) => {
 
     let nodeStyleClassName: string
 
-    // console.log(colourTheme)
+    // console.log(darkTheme)
 
-    if (colourTheme === 'light') {
-        // Light Colour Theme
-        nodeStyleClassName =
-            state === 0 ? ''
-                : state === 1 ? 'node-wall-light'
-                : state === 3 ? 'node-start-light'
-                : state === 4 ? 'node-finish-light'
-                : state === 5 ? 'node-traversed-path-light'
-                : 'node-shortest-path-light'
-
-        nodeStyleClassName += ' node-light'
-
-    } else {
+    if (darkTheme) {
         // Dark Colour Theme
         nodeStyleClassName =
             state === 0 ? ''
@@ -42,6 +30,18 @@ const GridRect: React.FC<CardProps> = ({ x, y, d, state, colourTheme, onMouseDow
                 : 'node-shortest-path-dark'
 
         nodeStyleClassName += ' node-dark'
+    } else {
+        // Light Colour Theme
+        nodeStyleClassName =
+        state === 0 ? ''
+            : state === 1 ? 'node-wall-light'
+            : state === 3 ? 'node-start-light'
+            : state === 4 ? 'node-finish-light'
+            : state === 5 ? 'node-traversed-path-light'
+            : 'node-shortest-path-light'
+
+    nodeStyleClassName += ' node-light' 
+    
     }
 
     const baseStyle = {
@@ -66,6 +66,6 @@ const GridRect: React.FC<CardProps> = ({ x, y, d, state, colourTheme, onMouseDow
 export default memo(
     GridRect, 
     (prevProps: Readonly<any>, nextProps: Readonly<any>) => {
-        return prevProps.state === nextProps.state && prevProps.colourTheme === nextProps.colourTheme
+        return prevProps.state === nextProps.state && prevProps.darkTheme === nextProps.darkTheme
     }
 )
