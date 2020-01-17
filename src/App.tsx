@@ -1,43 +1,37 @@
 /// <reference path="types/normalised.d.ts" />
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 
 import './App.css';
 
-import { dijkstra } from './algorithms'
-
-import Grid from './Grid'
 import MenuDrawerPersistent from './components/menuDrawerPersistent'
+import Grid from './Grid'
+
+import AppContext from './AppContext'
+import MainReducer from './reducers'
 
 const App: React.FC = () => {
 
-  const defaultEmptySolution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = {
-    nodesTraversed: [],
-    shortestPath: []
+  const initialState = {
+    status: 'none',
+    darkTheme: true,
+    solution: null,
+    runAlgorithm: () => null,
   }
 
-  const [grid, setGrid] = useState()
-  const [solution, setSolution] = useState(defaultEmptySolution)
-  const [isDarkTheme, setDarkTheme] = useState(true)
+  const [state, dispatch] = useReducer(MainReducer, initialState);
+  const value = { state, dispatch };
 
-  const runAlgorithm = () => {
-    const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = dijkstra(grid)
-    setSolution(solution)
-  }
-
-  const handleChange = () => {
-    setDarkTheme(prevState => !prevState)
-  };
+  console.log('re-rendering app')
 
   return (
     <div className="App">
-      <MenuDrawerPersistent isDarkTheme={isDarkTheme} handleChange={handleChange} />
-      <Grid
-        darkTheme={isDarkTheme}
-        setGrid={(values: number[][]) => setGrid(values)}
-        solution={solution} />
+      <AppContext.Provider value={value} >
+        <MenuDrawerPersistent />
+        <Grid />
+      </AppContext.Provider>
     </div>
-  );
+  )
 }
 
 export default App;

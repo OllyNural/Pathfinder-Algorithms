@@ -3,8 +3,6 @@
 import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import Node from './Node'
 
-import { dijkstra } from './algorithms'
-
 import './Grid.css';
 import AppContext from './AppContext';
 
@@ -30,26 +28,20 @@ const tempGrid: number[][] = [...Array(numX)].map((val, i) => [...Array(numY)].m
     return newValue
 }));
 
-type Solution = {
-    nodesTraversed: Normalised[],
-    shortestPath: Normalised[]
+type GridProps = {
+    setGrid: (values: number[][]) => void,
 }
 
-const Grid: React.FC = () => {
+const Grid: React.FC<GridProps> = ({ setGrid }) => {
 
-    const { state, dispatch } = useContext<AppContext>(AppContext);
-
-    const { status }: { status: string } = state
+    const { status, solution }: { status: string, solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } | null } = useContext<AppContext>(AppContext);
 
     /**
      * STATES
      */
     const [grid] = useState(tempGrid)
     const [values, setValues] = useState(tempGrid);
-    const valuesRef = useRef(values)
-    useEffect(() => {
-        valuesRef.current = values
-    })
+    setGrid(values)
 
     const [isMovingStart, setMovingStart] = useState(false)
     const isMovingStartRef = useRef(isMovingStart)
@@ -75,82 +67,74 @@ const Grid: React.FC = () => {
         nodeTypePointerRef.current = nodeTypePointer
     })
 
-    const [solution, setSolution] = useState<{ nodesTraversed: Normalised[], shortestPath: Normalised[] } | null>(null)
-    const solutionRef = useRef(solution)
-    useEffect(() => {
-        solutionRef.current = solution
-    })
+    const setValuesWithNumber = useCallback(
+        (x: number, y: number, value: number) => {
+            // console.log('setValuesWithNumber')
+            let newValuesGrid: number[][] = [...values];
+            newValuesGrid[x][y] = value;
+            setValues(newValuesGrid);
+        }, []
+    )
 
-    const runAlgorithm = () => {
-        dispatch({ status: 'running' })
-        const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = dijkstra(valuesRef.current)
-        setSolution(solution)
-        dispatch({ status: 'finished' })
-    }
-
-    useEffect(() => {
-        dispatch({ runAlgorithm: runAlgorithm })
-    }, [])
-
-    const setValuesWithNumber = (x: number, y: number, value: number) => {
-        console.log('Using these values')
-        console.log(values)
-        let newValuesGrid: number[][] = [...valuesRef.current];
-        newValuesGrid[x][y] = value;
-        setValues(newValuesGrid);
-    }
-
-    const animateShortestPath = (shortestPath: Normalised[]) => {
-        shortestPath.forEach((e, i) => {
-            setTimeout(() => {
-                if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
-                    setValuesWithNumber(e.x, e.y, 6)
-                }
-            }, 20 * i)
-        })
-    }
+    const animateShortestPath = useCallback(
+        (shortestPath: Normalised[]) => {
+            // console.log('animateShortestPath')
+            shortestPath.forEach((e, i) => {
+                setTimeout(() => {
+                    if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
+                        setValuesWithNumber(e.x, e.y, 6)
+                    }
+                    // console.log(values)
+                }, 25 * i)
+            })
+        },
+        [],
+    )
 
     const cleanGrid = (removeWalls?: boolean) => {
-        console.log('cleaning grid')
-        let newValuesGrid = [...values]
-        let finalValuesGrid = newValuesGrid.map((row, i) => row.map((val, j) => {
+        // console.log('cleaning grid')
+        let newValuesGrid = values.map((row, i) => row.map((val, j) => {
             const curr = values[i][j]
-            if (removeWalls) {
+            if (removeWalls){
                 if (curr !== 3 && curr !== 4) return 0
             } else {
                 if (curr !== 3 && curr !== 4 && curr !== 1) return 0
             }
             return curr
         }))
-        setValues(finalValuesGrid)
+
+        // console.log(newValuesGrid)
+        setValues(newValuesGrid)
     }
 
     useEffect(() => {
+        // cleanGrid()
+        console.log('hi')
+        console.log(status)
         if (status === 'reset') {
+            console.log('resetting')
             cleanGrid(true)
-        }
-    }, [status])
-
-    useEffect(() => {
-        if (!solution) return
-        cleanGrid(false)
-        const { nodesTraversed, shortestPath }: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = solution
-        if (!nodesTraversed || !shortestPath) return
-
-        nodesTraversed.forEach((e, i) => {
-            if (i === nodesTraversed.length - 1) {
-                setTimeout(() => {
-                    animateShortestPath(shortestPath)
-                }, 20 * i)
-            }
-            setTimeout(() => {
-                if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
-                    setValuesWithNumber(e.x, e.y, 5)
+        } else if (solution) {
+            cleanGrid(false)
+            const { nodesTraversed, shortestPath }: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = solution
+            if (!nodesTraversed || !shortestPath) return 
+    
+            nodesTraversed.forEach((e, i) => {
+                if (i === nodesTraversed.length - 1) {
+                    setTimeout(() => {
+                        animateShortestPath(shortestPath)
+                    }, 25 * i)
                 }
-            }, 20 * i)
-        });
-    }, [solution])
+                setTimeout(() => {
+                    if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
+                        setValuesWithNumber(e.x, e.y, 5)
+                    }
+                }, 10 * i)
+            });
 
+        }
+    }, [status, solution, setValuesWithNumber, animateShortestPath])
+  
 
     const updateWallValuesPosition = (x: number, y: number, currentTypeNode?: number) => {
         let newValue: number = 0
@@ -174,7 +158,6 @@ const Grid: React.FC = () => {
     }
 
     const handleMouseUp = (x: number, y: number) => {
-        console.log('handleMouseUp')
         if (isMovingStartRef.current) {
             if (x === endX && y === endY) {
                 setValuesWithNumber(startX, startY, 3)
@@ -192,6 +175,7 @@ const Grid: React.FC = () => {
         setMovingStart(false)
         setMovingEnd(false)
         prevWallState = 1
+        setGrid(values)
     }
 
     const handleHover = (x: number, y: number) => {
@@ -222,13 +206,15 @@ const Grid: React.FC = () => {
             {
                 grid.map((row: number[], i: number) =>
                     row.map((val: number, j: number) => {
+                        const state = values[i][j]
+
                         return (
                             <Node
                                 key={`${i}-${j}`}
                                 x={i}
                                 y={j}
                                 d={rectDiameter}
-                                nodeState={values[i][j]}
+                                state={state}
                                 onMouseDown={handleMouseDown}
                                 onMouseUp={handleMouseUp}
                                 onHover={handleHover}

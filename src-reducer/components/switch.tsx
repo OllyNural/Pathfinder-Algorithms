@@ -31,9 +31,7 @@ const useSwitchStyles = makeStyles({
 
 const SwitchFunc: React.FC = () => {
 
-    const { state, dispatch } = useContext<AppContext>(AppContext)
-
-    const { darkTheme }: { darkTheme: boolean } = state
+    const { darkTheme, setDarkTheme }: {darkTheme: boolean, setDarkTheme: () => void} = useContext<AppContext>(AppContext);
 
     const switchClasses = useSwitchStyles({})
     return (
@@ -48,7 +46,7 @@ const SwitchFunc: React.FC = () => {
                     checked: switchClasses.checked,
                 }}
                 checked={darkTheme}
-                onChange={() => dispatch({darkTheme: !darkTheme})}
+                onChange={() => setDarkTheme()}
                 value="checkDarkTheme"
                 inputProps={{ 'aria-label': 'Dark Theme Toggle' }}
                 color='primary'

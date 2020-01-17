@@ -6,11 +6,14 @@ declare type Normalised = {
 
 declare type StateContext = {
   status: string,
+  setStatus: (status: string) => void,
+  solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } | null,
   darkTheme: boolean,
+  setDarkTheme: () => void,
   runAlgorithm: () => void,
 };
 
 declare interface AppContext {
   state: stateContext;
-  dispatch: React.Dispatch<Action>
+  dispatch: ({type}:{type:string}) => void;
 }
