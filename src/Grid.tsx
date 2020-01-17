@@ -139,8 +139,10 @@ const Grid: React.FC = () => {
     useEffect(() => {
         if (status === 'clear-all') {
             cleanGrid(true)
+            setStats({totalTime: 0, numberOfNodes: 0})
         } else if (status === 'clear-solution') {
             cleanGrid(false)
+            setStats({totalTime: 0, numberOfNodes: 0})
         }
     }, [status])
 
