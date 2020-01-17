@@ -7,6 +7,7 @@ import { dijkstra } from './algorithms'
 
 import './Grid.css';
 import AppContext from './AppContext';
+import Stats from './components/stats'
 
 const rectDiameter = 25
 const gridHeightRatio = 0.9
@@ -31,8 +32,17 @@ const tempGrid: number[][] = [...Array(numX)].map((val, i) => [...Array(numY)].m
 }));
 
 type Solution = {
-    nodesTraversed: Normalised[],
-    shortestPath: Normalised[]
+    solution: {
+        nodesTraversed: Normalised[],
+        shortestPath: Normalised[]
+    },
+    totalTime: number,
+    numberOfNodes: number,
+}
+
+const tempStats = {
+    totalTime: 0,
+    numberOfNodes: 0
 }
 
 const Grid: React.FC = () => {
@@ -46,6 +56,7 @@ const Grid: React.FC = () => {
      */
     const [grid] = useState(tempGrid)
     const [values, setValues] = useState(tempGrid);
+    const [stats, setStats] = useState(tempStats)
     const valuesRef = useRef(values)
     useEffect(() => {
         valuesRef.current = values
@@ -75,7 +86,7 @@ const Grid: React.FC = () => {
         nodeTypePointerRef.current = nodeTypePointer
     })
 
-    const [solution, setSolution] = useState<{ nodesTraversed: Normalised[], shortestPath: Normalised[] } | null>(null)
+    const [solution, setSolution] = useState<Solution | null>(null)
     const solutionRef = useRef(solution)
     useEffect(() => {
         solutionRef.current = solution
@@ -83,8 +94,11 @@ const Grid: React.FC = () => {
 
     const runAlgorithm = () => {
         dispatch({ status: 'running' })
+        const startTime = Date.now()
         const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = dijkstra(valuesRef.current)
-        setSolution(solution)
+        const endTime = Date.now()
+        const totalTime = endTime - startTime
+        setSolution({ solution, totalTime, numberOfNodes: solution.nodesTraversed.length })
         dispatch({ status: 'finished' })
     }
 
@@ -93,8 +107,6 @@ const Grid: React.FC = () => {
     }, [])
 
     const setValuesWithNumber = (x: number, y: number, value: number) => {
-        console.log('Using these values')
-        console.log(values)
         let newValuesGrid: number[][] = [...valuesRef.current];
         newValuesGrid[x][y] = value;
         setValues(newValuesGrid);
@@ -111,7 +123,6 @@ const Grid: React.FC = () => {
     }
 
     const cleanGrid = (removeWalls?: boolean) => {
-        console.log('cleaning grid')
         let newValuesGrid = [...values]
         let finalValuesGrid = newValuesGrid.map((row, i) => row.map((val, j) => {
             const curr = values[i][j]
@@ -126,16 +137,26 @@ const Grid: React.FC = () => {
     }
 
     useEffect(() => {
-        if (status === 'reset') {
+        if (status === 'clear-all') {
             cleanGrid(true)
+        } else if (status === 'clear-solution') {
+            cleanGrid(false)
         }
     }, [status])
 
     useEffect(() => {
         if (!solution) return
         cleanGrid(false)
-        const { nodesTraversed, shortestPath }: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = solution
+        const 
+            { solution: { nodesTraversed, shortestPath }, totalTime, numberOfNodes }: 
+                { 
+                    solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] },
+                    totalTime: number,
+                    numberOfNodes: number
+                } = solution
         if (!nodesTraversed || !shortestPath) return
+
+        setStats({totalTime, numberOfNodes})
 
         nodesTraversed.forEach((e, i) => {
             if (i === nodesTraversed.length - 1) {
@@ -174,7 +195,6 @@ const Grid: React.FC = () => {
     }
 
     const handleMouseUp = (x: number, y: number) => {
-        console.log('handleMouseUp')
         if (isMovingStartRef.current) {
             if (x === endX && y === endY) {
                 setValuesWithNumber(startX, startY, 3)
@@ -238,6 +258,7 @@ const Grid: React.FC = () => {
                     )
                 )
             }
+            <Stats totalTime={stats.totalTime} numberOfNodes={stats.numberOfNodes} />
         </div>
     );
 }

@@ -31,8 +31,11 @@ const StartButton: React.FC = () => {
             <Fab color="secondary" aria-label="start" variant="extended" onClick={runAlgorithm} >
                 Start <PlayArrowIcon fontSize={'large'} />
             </Fab>
-            <Fab aria-label="edit" variant="extended" onClick={() => dispatch({ status: 'reset' })} >
-                Reset Walls <RotateLeftIcon fontSize={'large'} />
+            <Fab aria-label="edit" variant="extended" onClick={() => dispatch({ status: 'clear-all' })} >
+                Clear Grid <RotateLeftIcon fontSize={'large'} />
+            </Fab>
+            <Fab aria-label="edit" variant="extended" onClick={() => dispatch({ status: 'clear-solution' })} >
+                Clear Solution <RotateLeftIcon fontSize={'large'} />
             </Fab>
         </div>
     );
