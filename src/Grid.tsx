@@ -25,7 +25,7 @@ let endY: number = Math.floor(numY * 0.75)
 
 let prevWallState: number = 1
 
-const tempGrid: number[][] = [...Array(numX)].map((val, i) => [...Array(numY)].map((val, j) => {
+const tempGrid: number[][] = [...Array(numX + 1)].map((val, i) => [...Array(numY + 1)].map((val, j) => {
     const newValue = (i === startX && j === startY) ?
         3 : (i === endX && j === endY) ? 4 : 0
     return newValue

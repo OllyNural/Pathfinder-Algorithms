@@ -9,6 +9,7 @@ import Grid from './Grid'
 
 import AppContext from './AppContext'
 import MainReducer from './reducers'
+import { Box } from '@material-ui/core';
 
 const App: React.FC = () => {
 
@@ -26,7 +27,9 @@ const App: React.FC = () => {
     <div className="App">
       <AppContext.Provider value={value} >
         <MenuDrawerPersistent />
-        <Grid />
+        <Box className="Grid-Container" >
+          <Grid />
+        </Box>
       </AppContext.Provider>
     </div>
   )

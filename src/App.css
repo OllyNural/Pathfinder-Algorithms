@@ -1,6 +1,7 @@
 body {
   height: 100vh;
   width: 100vw;
+  background: black;
 }
 
 #root {
@@ -12,6 +13,21 @@ body {
   text-align: center;
   height: 100%;
   width: 100%;
+  overflow: hidden;
+  background: black;
+}
+
+.Grid-Container {
+  height: 100%;
+  width: 100%;
+  margin-top: 56px;
+  overflow: hidden;
+}
+
+@media only screen and (min-height:600px) { 
+  .Grid-Container {
+        margin-top: 64px;
+    }
 }
 
 .App-logo {
