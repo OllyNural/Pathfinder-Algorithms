@@ -24,8 +24,8 @@ const ExpansionPanel = withStyles({
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderBottom: '1px solid rgba(0, 0, 0, .250)',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    // borderBottom: '1px solid rgba(0, 0, 0, .250)',
     marginBottom: -1,
     minHeight: 56,
     '&$expanded': {
@@ -61,10 +61,7 @@ const AlgorithmMenu = () => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
-            Brief description of Dijksta's here
-          </Typography>
-          <Typography>
-            Different heuristics of algorithm perhaps
+            Description of Dijksta's here
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -75,16 +72,6 @@ const AlgorithmMenu = () => {
         <ExpansionPanelDetails>
           <Typography>
             Lorem ipsum Pathfinding Algorithm #2.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <ExpansionPanelSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Pathfinding Algorithm #3</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Lorem ipsum Pathfinding Algorithm #3.
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>

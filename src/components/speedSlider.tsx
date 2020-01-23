@@ -41,9 +41,9 @@ const SpeedSlider: React.FC = () => {
         }
     }
 
-    const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log(event)
-    }
+    // const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //     console.log(event)
+    // }
 
     return (
         <Box pt={5} className={classes.root} >
@@ -59,7 +59,7 @@ const SpeedSlider: React.FC = () => {
                     onChange={handleChange} 
                     onChangeCommitted={handleChangeCommitted}
                 />
-                <TextField onChange={handleTextFieldChange} value={value} />
+                {/* <TextField onChange={handleTextFieldChange} value={value} /> */}
             </Box>
         </Box>
     )

@@ -115,7 +115,7 @@ const MenuNavigation: React.FC = () => {
           </Typography>
           {/* <div className={classes.toolbar} > */}
             <StartButton />
-            <Switch />
+            {/* <Switch /> */}
             <IconButton
               color="inherit"
               aria-label="open drawer"
