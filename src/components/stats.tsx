@@ -28,7 +28,7 @@ const Stats: React.FC<StatsProps> = ({ totalTime, numberOfNodes }) => {
 
     return (
         <Paper className={classes.root} elevation={3}>
-            <Typography>Total Time: {totalTime}</Typography>
+            <Typography> Total Time: {totalTime}ms</Typography>
             <Typography>Nodes Evaluated: {numberOfNodes}</Typography>
         </Paper>
     )

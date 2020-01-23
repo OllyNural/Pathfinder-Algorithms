@@ -61,8 +61,10 @@ const AlgorithmMenu = () => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
-            <p>Brief description of Dijksta's here</p>
-            <p>Different heuristics of algorithm perhaps</p>
+            Brief description of Dijksta's here
+          </Typography>
+          <Typography>
+            Different heuristics of algorithm perhaps
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>

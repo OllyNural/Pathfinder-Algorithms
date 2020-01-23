@@ -49,7 +49,7 @@ const Grid: React.FC = () => {
 
     const { state, dispatch } = useContext<AppContext>(AppContext);
 
-    const { status }: { status: string } = state
+    const { status, renderSpeed }: { status: string, renderSpeed: number } = state
 
     /**
      * STATES
@@ -94,10 +94,10 @@ const Grid: React.FC = () => {
 
     const runAlgorithm = () => {
         dispatch({ status: 'running' })
-        const startTime = Date.now()
+        const startPerformanceTime = window.performance.now()
         const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = dijkstra(valuesRef.current)
-        const endTime = Date.now()
-        const totalTime = endTime - startTime
+        const endPerformanceTime = window.performance.now()
+        const totalTime = Math.round( (endPerformanceTime - startPerformanceTime) * 100 + Number.EPSILON ) / 100
         setSolution({ solution, totalTime, numberOfNodes: solution.nodesTraversed.length })
         dispatch({ status: 'finished' })
     }
@@ -118,7 +118,7 @@ const Grid: React.FC = () => {
                 if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
                     setValuesWithNumber(e.x, e.y, 6)
                 }
-            }, 20 * i)
+            }, renderSpeed * i)
         })
     }
 
@@ -164,13 +164,13 @@ const Grid: React.FC = () => {
             if (i === nodesTraversed.length - 1) {
                 setTimeout(() => {
                     animateShortestPath(shortestPath)
-                }, 20 * i)
+                }, renderSpeed * i)
             }
             setTimeout(() => {
                 if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
                     setValuesWithNumber(e.x, e.y, 5)
                 }
-            }, 20 * i)
+            }, renderSpeed * i)
         });
     }, [solution])
 

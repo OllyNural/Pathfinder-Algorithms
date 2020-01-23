@@ -15,8 +15,8 @@ const App: React.FC = () => {
   const initialState = {
     status: 'none',
     darkTheme: true,
-    solution: null,
     runAlgorithm: () => null,
+    renderSpeed: 25,
   }
 
   const [state, dispatch] = useReducer(MainReducer, initialState);

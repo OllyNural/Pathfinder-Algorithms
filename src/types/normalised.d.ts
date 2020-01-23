@@ -8,6 +8,7 @@ declare type StateContext = {
   status: string,
   darkTheme: boolean,
   runAlgorithm: () => void,
+  renderSpeed: number,
 };
 
 declare interface AppContext {
