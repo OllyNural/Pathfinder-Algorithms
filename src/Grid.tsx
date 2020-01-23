@@ -56,7 +56,9 @@ const Grid: React.FC = () => {
      */
     const [grid] = useState(tempGrid)
     const [values, setValues] = useState(tempGrid);
-    const [stats, setStats] = useState(tempStats)
+    const [stats, setStats] = useState(tempStats);
+    const [solutionTimeouts, setSolutionTimeouts] = useState<NodeJS.Timeout[]>([]);
+
     const valuesRef = useRef(values)
     useEffect(() => {
         valuesRef.current = values
@@ -113,16 +115,27 @@ const Grid: React.FC = () => {
     }
 
     const animateShortestPath = (shortestPath: Normalised[]) => {
+        const solutionTimeouts: NodeJS.Timeout[] = []
         shortestPath.forEach((e, i) => {
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
                     setValuesWithNumber(e.x, e.y, 6)
                 }
             }, renderSpeed * i)
+            solutionTimeouts.push(timeout)
         })
+        setSolutionTimeouts((currentSolutionTimeouts) => [...currentSolutionTimeouts, ...solutionTimeouts])
+    }
+
+    const clearTimeouts = () => {
+        solutionTimeouts.forEach(timeout => {
+            clearTimeout(timeout)
+        })
+        setSolutionTimeouts([])
     }
 
     const cleanGrid = (removeWalls?: boolean) => {
+        clearTimeouts()
         let newValuesGrid = [...values]
         let finalValuesGrid = newValuesGrid.map((row, i) => row.map((val, j) => {
             const curr = values[i][j]
@@ -161,16 +174,20 @@ const Grid: React.FC = () => {
         setStats({totalTime, numberOfNodes})
 
         nodesTraversed.forEach((e, i) => {
+            const solutionTimeouts: NodeJS.Timeout[] = []
             if (i === nodesTraversed.length - 1) {
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     animateShortestPath(shortestPath)
                 }, renderSpeed * i)
+                solutionTimeouts.push(timeout)
             }
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 if (values[e.x][e.y] !== 3 && values[e.x][e.y] !== 4) {
                     setValuesWithNumber(e.x, e.y, 5)
                 }
             }, renderSpeed * i)
+            solutionTimeouts.push(timeout)
+            setSolutionTimeouts((currentSolutionTimeouts) => [...currentSolutionTimeouts, ...solutionTimeouts])
         });
     }, [solution])
 

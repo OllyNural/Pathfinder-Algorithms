@@ -22,8 +22,6 @@ const App: React.FC = () => {
   const [state, dispatch] = useReducer(MainReducer, initialState);
   const value = { state, dispatch };
 
-  console.log('re-rendering app')
-
   return (
     <div className="App">
       <AppContext.Provider value={value} >
