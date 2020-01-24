@@ -25,6 +25,7 @@ const ExpansionPanel = withStyles({
 const ExpansionPanelSummary = withStyles({
   root: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    // borderBottom: '1px solid rgba(0, 0, 0, .250)',
     marginBottom: -1,
     minHeight: 56,
     '&$expanded': {

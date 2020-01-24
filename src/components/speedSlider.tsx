@@ -3,7 +3,7 @@
 import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, TextField } from '@material-ui/core';
 import AppContext from '../AppContext';
 
 const useSwitchStyles = makeStyles({
@@ -41,6 +41,10 @@ const SpeedSlider: React.FC = () => {
         }
     }
 
+    // const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //     console.log(event)
+    // }
+
     return (
         <Box pt={5} className={classes.root} >
             <Box className={classes.slideContainer} >
@@ -55,6 +59,7 @@ const SpeedSlider: React.FC = () => {
                     onChange={handleChange} 
                     onChangeCommitted={handleChangeCommitted}
                 />
+                {/* <TextField onChange={handleTextFieldChange} value={value} /> */}
             </Box>
         </Box>
     )
