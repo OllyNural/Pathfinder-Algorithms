@@ -17,6 +17,7 @@ const useSwitchStyles = makeStyles({
             color: 'black',
             colorPrimary: 'black',
             colorSecondary: 'black',
+            // backgroundColor: '#000000'
         },
         '&$checked + $track': {
             color: '#ffffff',

@@ -1,9 +1,18 @@
 .gridContainer {
-    height: 101%;
-    width: 101%;
+    height: 90%;
+    width: 100%;
+    margin-top: 56px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
     /* overflow: hidden; */
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+@media only screen and (min-height:600px) { 
+    .gridContainer {
+        margin-top: 64px;
+    }
 }
