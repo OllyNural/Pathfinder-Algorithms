@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: 700,
             position: 'absolute',
             bottom: 25,
-            left: 25,
+            right: 25,
         },
     }),
 );
