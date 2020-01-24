@@ -4,6 +4,8 @@ import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
+import { FormControlLabel } from '@material-ui/core';
 
 const ExpansionPanel = withStyles({
   root: {
@@ -28,7 +30,7 @@ const ExpansionPanelSummary = withStyles({
     '&$expanded': {
       minHeight: 56,
       '&::after': {
-        transform: 'rotate(180deg)'
+        transform: 'rotate(0deg)'
       }
     },
     '&::after': {
@@ -72,19 +74,24 @@ export default function CustomizedExpansionPanels() {
     <div>
       <ExpansionPanel square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Happy Al</Typography>
+          <Typography>Dijkstra's Algorithm</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+        <FormControlLabel
+          control={
+            <Checkbox
+              // checked={state.checkedB}
+              value="checkedB"
+              color="primary"
+            />
+          }
+          label="Banter"
+        />
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <ExpansionPanelSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Happy Al</Typography>
+          <Typography>A* Algorithm</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
@@ -96,7 +103,7 @@ export default function CustomizedExpansionPanels() {
       </ExpansionPanel>
       <ExpansionPanel square expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
         <ExpansionPanelSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Happy Al</Typography>
+          <Typography>D* Algorithm</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>

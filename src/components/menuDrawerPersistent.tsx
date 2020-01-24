@@ -17,12 +17,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import SettingIcon from '@material-ui/icons/Settings';
 
 import { StartButton,
   ClearGridButton,
   ClearSolutionButton
 } from './startButton';
 import ExpansionPanel from './expansionPanel';
+import SpeedSlider from './speedSlider';
 
 // import StartButton from './startButton'
 // import AlgorithmMenu from './algorithmMenu'
@@ -146,7 +148,8 @@ const MenuNavigation: React.FC = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            Pathy.io
+            {/* <img src="https://s3.amazonaws.com/word-art/5e2ad4018eb33c71b4821df2.png" style={{ height: '100%' }} /> */}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -178,7 +181,10 @@ const MenuNavigation: React.FC = () => {
         </List>
         <Divider />
         <List>
-          <ExpansionPanel />
+          { open ? <ExpansionPanel /> : <IconButton onClick={handleDrawerOpen}><SettingIcon  /></IconButton>}
+        </List>
+        <List>
+        { open ? <SpeedSlider /> : '' }
         </List>
       </Drawer>
     </div>
