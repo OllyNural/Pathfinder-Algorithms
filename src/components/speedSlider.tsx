@@ -12,9 +12,14 @@ const useSwitchStyles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        textAlign: 'left'
     },
     slideContainer: {
         width: '80%',
+    },
+    milliseconds: {
+        textAlign: 'left',
+        fontSize: '14px'
     }
 });
 
@@ -49,7 +54,7 @@ const SpeedSlider: React.FC = () => {
         <Box pt={5} className={classes.root} >
             <Box className={classes.slideContainer} >
                 <Typography>
-                    Current Speed of rendering in Milliseconds: {value}
+                    Render speed
                 </Typography>
                 <Slider 
                     min={min}
@@ -59,7 +64,7 @@ const SpeedSlider: React.FC = () => {
                     onChange={handleChange} 
                     onChangeCommitted={handleChangeCommitted}
                 />
-                {/* <TextField onChange={handleTextFieldChange} value={value} /> */}
+                <Typography className={classes.milliseconds}>{value}ms</Typography>
             </Box>
         </Box>
     )

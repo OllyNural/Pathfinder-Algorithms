@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
             // height: theme.spacing(8),
             position: 'absolute',
             bottom: 25,
-            left: 25,
+            right: 25,
         },
     }),
 );
