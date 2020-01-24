@@ -7,10 +7,10 @@ const dirs = [
     (x: number, y: number) => ({ x, y: y + 1 }), // East
     (x: number, y: number) => ({ x: x + 1, y }), // South
     (x: number, y: number) => ({ x, y: y - 1 }), // West
-    // (x: number, y: number) => ({ x: x + 1, y: y - 1 }), // South 
-    // (x: number, y: number) => ({ x: x - 1, y: y - 1 }), // South 
-    // (x: number, y: number) => ({ x: x - 1, y: y + 1 }), // South 
-    // (x: number, y: number) => ({ x: x + 1, y: y + 1 }), // South 
+    // (x: number, y: number) => ({ x: x + 1, y: y - 1 }), 
+    // (x: number, y: number) => ({ x: x - 1, y: y - 1 }), 
+    // (x: number, y: number) => ({ x: x - 1, y: y + 1 }), 
+    // (x: number, y: number) => ({ x: x + 1, y: y + 1 }), 
 ]
 
 const sortUnvisitedNodes = (first: Dijkstra, second: Dijkstra) => {

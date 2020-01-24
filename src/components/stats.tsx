@@ -14,8 +14,6 @@ const useStyles = makeStyles((theme: Theme) =>
             textAlign: 'left',
             backgroundColor: '#CCCCCC',
             fontWeight: 700,
-            // width: theme.spacing(16),
-            // height: theme.spacing(8),
             position: 'absolute',
             bottom: 25,
             right: 25,

@@ -12,17 +12,12 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import SettingIcon from '@material-ui/icons/Settings';
 
 import { StartButton,
   ClearGridButton,
   ClearSolutionButton
-} from './startButton';
+} from './ActionButtons';
 import ExpansionPanel from './expansionPanel';
 import SpeedSlider from './speedSlider';
 
@@ -78,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowX: 'hidden',
       width: theme.spacing(7) + 1,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(7) + 1,
+        width: theme.spacing(8.4) + 1,
       },
     },
     toolbar: {
@@ -92,9 +87,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing(3),
     },
-    menuPadding: {
-      paddingLeft: theme.spacing(3),
-    }
   }),
 );
 
@@ -106,15 +98,15 @@ const MenuNavigation: React.FC = () => {
   const mainButtons = [
     {
       Button: StartButton,
-      text: 'StartButton'
-    },
-    {
-      Button: ClearGridButton,
-      text: 'ClearGridButton'
+      text: 'Start Algorithm'
     },
     {
       Button: ClearSolutionButton,
-      text: 'ClearSolutionButton'
+      text: 'Stop Algorithm'
+    },
+    {
+      Button: ClearGridButton,
+      text: 'Clear Grid'
     }
   ]
 
@@ -174,14 +166,12 @@ const MenuNavigation: React.FC = () => {
         <Divider />
         <List>
           {mainButtons.map(({ Button, text }, index) => (
-            <ListItem button key={text}>
-              <Button /><span className={classes.menuPadding}>{ text }</span>
-            </ListItem>
+            <Button text={text} />
           ))}
         </List>
         <Divider />
         <List>
-          { open ? <ExpansionPanel /> : <IconButton onClick={handleDrawerOpen}><SettingIcon  /></IconButton>}
+          { open ? <ExpansionPanel /> : <IconButton onClick={handleDrawerOpen}><SettingIcon fontSize={'large'} /></IconButton>}
         </List>
         <List>
         { open ? <SpeedSlider /> : '' }
