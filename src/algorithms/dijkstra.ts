@@ -39,7 +39,7 @@ const findShortestPath = (grid: Dijkstra[][]) => {
     return shortestPath.reverse()
 }
 
-const dijkstra = (dirtyGrid: number[][]) => {
+const Dijkstra = (dirtyGrid: number[][]) => {
     const grid: Dijkstra[][] = input(dirtyGrid)
     const unvisitedNodes: Dijkstra[] = []
     const nodesTraversed: Dijkstra[] = []
@@ -73,7 +73,7 @@ const dijkstra = (dirtyGrid: number[][]) => {
 }
 
 export {
-    dijkstra,
+    Dijkstra,
     findIndexFromValue,
     sortUnvisitedNodes,
     findShortestPath,

@@ -1,5 +1,5 @@
-import { dijkstra } from './dijkstra'
+import { Dijkstra } from './dijkstra'
 
 export {
-    dijkstra
+    Dijkstra
 }

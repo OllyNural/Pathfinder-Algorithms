@@ -1,9 +1,7 @@
 /// <reference path="types/normalised.d.ts" />
 
-import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import Node from './Node'
-
-import { dijkstra } from './algorithms'
 
 import './Grid.css';
 import AppContext from './AppContext';
@@ -49,7 +47,7 @@ const Grid: React.FC = () => {
 
     const { state, dispatch } = useContext<AppContext>(AppContext);
 
-    const { status, renderSpeed }: { status: string, renderSpeed: number } = state
+    const { status, renderSpeed, currentAlgorithm }: { status: string, renderSpeed: number, currentAlgorithm: (grid: number[][]) => { nodesTraversed: Normalised[], shortestPath: Normalised[] } } = state
 
     /**
      * STATES
@@ -94,18 +92,29 @@ const Grid: React.FC = () => {
         solutionRef.current = solution
     })
 
-    const runAlgorithm = () => {
-        dispatch({ status: 'running' })
+    // const runAlgorithm = (currentAlgorithm: (grid: number[][]) => { nodesTraversed: Normalised[], shortestPath: Normalised[] }) => {
+    //     dispatch({ status: 'running' })
+    //     console.log(currentAlgorithm)
+    //     const startPerformanceTime = window.performance.now()
+    //     const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = currentAlgorithm(valuesRef.current)
+    //     const endPerformanceTime = window.performance.now()
+    //     const totalTime = Math.round( (endPerformanceTime - startPerformanceTime) * 100 + Number.EPSILON ) / 100
+    //     setSolution({ solution, totalTime, numberOfNodes: solution.nodesTraversed.length })
+    //     dispatch({ status: 'finished' })
+    // }
+
+    useEffect(() => {
+        if (status !== 'start-algorithm') return
         const startPerformanceTime = window.performance.now()
-        const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = dijkstra(valuesRef.current)
+        const solution: { nodesTraversed: Normalised[], shortestPath: Normalised[] } = currentAlgorithm(valuesRef.current)
         const endPerformanceTime = window.performance.now()
         const totalTime = Math.round( (endPerformanceTime - startPerformanceTime) * 100 + Number.EPSILON ) / 100
         setSolution({ solution, totalTime, numberOfNodes: solution.nodesTraversed.length })
         dispatch({ status: 'finished' })
-    }
+    }, [status, currentAlgorithm])
 
     useEffect(() => {
-        dispatch({ runAlgorithm: runAlgorithm })
+        dispatch({ currentAlgorithm: 'Dijkstra' })
     }, [])
 
     const setValuesWithNumber = (x: number, y: number, value: number) => {

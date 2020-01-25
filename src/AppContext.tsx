@@ -1,4 +1,4 @@
-/// <reference path="types/normalised.d.ts" />
+/// <reference path="types/state.d.ts" />
 
 import React from 'react'
 

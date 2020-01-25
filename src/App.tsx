@@ -14,8 +14,7 @@ const App: React.FC = () => {
 
   const initialState = {
     status: 'none',
-    darkTheme: true,
-    runAlgorithm: () => null,
+    currentAlgorithm: () => {},
     renderSpeed: 25,
   }
 

@@ -18,7 +18,7 @@ import { StartButton,
   ClearGridButton,
   ClearSolutionButton
 } from './ActionButtons';
-import ExpansionPanel from './expansionPanel';
+import SettingsPanel from './settingsPanel';
 import SpeedSlider from './speedSlider';
 
 // import StartButton from './startButton'
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowX: 'hidden',
       width: theme.spacing(7) + 1,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(8.4) + 1,
+        width: theme.spacing(7) + 1,
       },
     },
     toolbar: {
@@ -170,9 +170,7 @@ const MenuNavigation: React.FC = () => {
           ))}
         </List>
         <Divider />
-        <List>
-          { open ? <ExpansionPanel /> : <IconButton onClick={handleDrawerOpen}><SettingIcon fontSize={'large'} /></IconButton>}
-        </List>
+        { open ? <SettingsPanel /> : <IconButton onClick={handleDrawerOpen}><SettingIcon /></IconButton>}
         <List>
         { open ? <SpeedSlider /> : '' }
         </List>

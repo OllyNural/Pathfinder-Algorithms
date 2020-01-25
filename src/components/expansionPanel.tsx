@@ -77,7 +77,7 @@ export default function CustomizedExpansionPanels() {
           <Typography>Dijkstra's Algorithm</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-        <FormControlLabel
+        {/* <FormControlLabel
           control={
             <Checkbox
               // checked={state.checkedB}
@@ -86,7 +86,7 @@ export default function CustomizedExpansionPanels() {
             />
           }
           label="Banter"
-        />
+        /> */}
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel square expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>

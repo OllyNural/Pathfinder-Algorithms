@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import StopIcon from '@material-ui/icons/Stop';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -12,7 +16,6 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             '& > *': {
-                margin: theme.spacing(1),
                 display: 'flex',
                 justifyContent: 'center'
             },
@@ -44,20 +47,25 @@ export const StartButton: React.FC<ButtonProps> = ({ text }) => {
 
     const { state, dispatch } = useContext<AppContext>(AppContext)
 
-    const { runAlgorithm }: { runAlgorithm: () => void } = state
+    // const { runAlgorithm, currentAlgorithm }: { runAlgorithm: () => void, currentAlgorithm: (grid: number[][]) => any } = state
 
     return (
-        <ListItem button key={text} onClick={runAlgorithm}>
+        <ListItem 
+            button 
+            key={text} 
+            onClick={() => dispatch({ status: 'start-algorithm' })} 
+            className={classes.root}
+        >
             <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                onClick={runAlgorithm}
+                onClick={() => dispatch({ status: 'start-algorithm' })}
                 edge="start"
             >
-                <PlayArrowIcon fontSize={'large'} className={classes.startButton} />
+                <PlayArrowIcon className={classes.startButton} />
             </IconButton>
             <Typography className={classes.menuPadding}>{text}</Typography>
-        </ListItem>
+        </ListItem >
     )
 };
 
@@ -74,7 +82,7 @@ export const ClearSolutionButton: React.FC<ButtonProps> = ({ text }) => {
                 onClick={() => dispatch({ status: 'clear-solution' })}
                 edge="start"
             >
-                <StopIcon fontSize={'large'} className={classes.stopButton} />
+                <StopIcon className={classes.stopButton} />
             </IconButton>
             <Typography className={classes.menuPadding}>{text}</Typography>
         </ListItem>
@@ -94,7 +102,7 @@ export const ClearGridButton: React.FC<ButtonProps> = ({ text }) => {
                 onClick={() => dispatch({ status: 'clear-all' })}
                 edge="start"
             >
-                <DeleteIcon fontSize={'large'} className={classes.deleteButton} />
+                <DeleteIcon className={classes.deleteButton} />
             </IconButton>
             <Typography className={classes.menuPadding}>{text}</Typography>
         </ListItem>
