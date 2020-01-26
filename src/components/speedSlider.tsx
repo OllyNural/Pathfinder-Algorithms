@@ -55,11 +55,11 @@ const SpeedSlider: React.FC = () => {
 
     const classes = useSwitchStyles({})
 
-    const handleChange = (event: React.ChangeEvent<{}>, value: number | number[]) => {
+    const handleChange = (value: number | number[]) => {
         if (typeof value === 'number') setValue(value)
     }
 
-    const handleChangeCommitted = (event: React.ChangeEvent<{}>, value: number | number[]) => {
+    const handleChangeCommitted = (value: number | number[]) => {
         if (typeof value === 'number') {
             setValue(value)
             dispatch({ renderSpeed: value })
@@ -76,14 +76,26 @@ const SpeedSlider: React.FC = () => {
                 min={min}
                 max={max}
                 step={steps}
-                defaultValue={value}
-                onChange={handleChange}
-                onChangeCommitted={handleChangeCommitted}
+                value={value}
+                onChange={(e, val) => handleChange(val)}
+                onChangeCommitted={(e, val) => handleChangeCommitted(val)}
             />
             <div className={classes.buttonContainer}>
-                <IconButton className={classes.addRemoveButtons} ><RemoveIcon fontSize={'small'} /></IconButton>
+                <IconButton 
+                    disabled={value === min} 
+                    onClick={() => handleChangeCommitted(value - 25)} 
+                    className={classes.addRemoveButtons} 
+                >
+                    <RemoveIcon fontSize={'small'} />
+                </IconButton>
                 <Typography className={classes.milliseconds}>{value}</Typography>
-                <IconButton className={classes.addRemoveButtons} ><AddIcon fontSize={'small'} /></IconButton>
+                <IconButton 
+                    disabled={value === max} 
+                    onClick={() => handleChangeCommitted(value + 25)} 
+                    className={classes.addRemoveButtons}
+                >
+                    <AddIcon fontSize={'small'} />
+                </IconButton>
             </div>
         </Box>
     )

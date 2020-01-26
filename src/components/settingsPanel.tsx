@@ -50,7 +50,7 @@ export default function SettingsPanel() {
   return (
     <>
       <div className={classes.menuSectionContainer} >
-        <Typography variant={'h6'} >Algorithm Choice</Typography>
+        <Typography variant={'h6'} >Algorithm</Typography>
         <List>
           {["Dijkstra", "A*"].map((text, index) => (
             <MenuItem
