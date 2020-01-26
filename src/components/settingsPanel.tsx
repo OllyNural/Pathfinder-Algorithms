@@ -1,49 +1,62 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import MenuItem from '@material-ui/core/MenuItem'
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import AppContext from '../AppContext';
+import SpeedSlider from './speedSlider';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
+      '&$selected': {
+        '&:hover': {
+          backgroundColor: theme.palette.primary.main,
+        },
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+      },
     },
+    selected: {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+    }
   }),
 );
 
 export default function SettingsPanel() {
-  // const classes = useStyles();
-  // const theme = useTheme();
+  const classes = useStyles({});
 
   const { state, dispatch } = useContext<AppContext>(AppContext)
+
+  const [selected, setSelected] = useState<number>(0)
+
+  const dispatchAlgorithm = (text: string, index: number) => {
+    setSelected(index)
+    dispatch({ currentAlgorithm: text })
+  }
 
   return (
     <>
       <Typography variant={'subtitle1'} >Algorithm Choice</Typography>
       <List>
         {["Dijkstra", "A*"].map((text, index) => (
-          <ListItem button key={text} onClick={() => dispatch({ currentAlgorithm: text })}>
-            {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
+          <MenuItem
+            classes={{
+              root: classes.root,
+              selected: classes.selected
+            }}
+            selected={selected === index} button key={text} onClick={() => dispatchAlgorithm(text, index)}>
             <ListItemText primary={text} />
-          </ListItem>
+          </MenuItem>
         ))}
       </List>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <SpeedSlider />
+      <Divider />
     </>
   );
 }

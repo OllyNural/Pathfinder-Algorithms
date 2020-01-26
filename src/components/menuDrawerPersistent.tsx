@@ -19,7 +19,6 @@ import { StartButton,
   ClearSolutionButton
 } from './ActionButtons';
 import SettingsPanel from './settingsPanel';
-import SpeedSlider from './speedSlider';
 
 // import StartButton from './startButton'
 // import AlgorithmMenu from './algorithmMenu'
@@ -171,9 +170,6 @@ const MenuNavigation: React.FC = () => {
         </List>
         <Divider />
         { open ? <SettingsPanel /> : <IconButton onClick={handleDrawerOpen}><SettingIcon /></IconButton>}
-        <List>
-        { open ? <SpeedSlider /> : '' }
-        </List>
       </Drawer>
     </div>
   );
