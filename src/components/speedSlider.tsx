@@ -3,7 +3,7 @@
 import React, { useContext, useState } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
-import { Box, Typography, TextField, Button } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import AppContext from '../AppContext';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';

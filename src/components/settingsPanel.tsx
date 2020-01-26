@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem'
 import ListItemText from '@material-ui/core/ListItemText';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-import { FormControlLabel, Checkbox, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import AppContext from '../AppContext';
 import SpeedSlider from './speedSlider';
 import SettingsCheckbox from './settingsCheckbox'
@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
+      marginBottom: '5px',
       '&$selected': {
         '&:hover': {
           backgroundColor: theme.palette.primary.main,
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SettingsPanel() {
   const classes = useStyles({});
 
-  const { state, dispatch } = useContext<AppContext>(AppContext)
+  const { dispatch } = useContext<AppContext>(AppContext)
 
   const [selected, setSelected] = useState<number>(0)
 

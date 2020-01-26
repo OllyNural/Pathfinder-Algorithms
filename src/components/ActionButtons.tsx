@@ -1,11 +1,7 @@
 import React, { useContext } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import StopIcon from '@material-ui/icons/Stop';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -17,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             '& > *': {
                 display: 'flex',
-                justifyContent: 'center'
+                justifyContent: 'center',
             },
         },
         extendedIcon: {
@@ -45,9 +41,7 @@ type ButtonProps = {
 export const StartButton: React.FC<ButtonProps> = ({ text }) => {
     const classes = useStyles({});
 
-    const { state, dispatch } = useContext<AppContext>(AppContext)
-
-    // const { runAlgorithm, currentAlgorithm }: { runAlgorithm: () => void, currentAlgorithm: (grid: number[][]) => any } = state
+    const { dispatch } = useContext<AppContext>(AppContext)
 
     return (
         <ListItem 
@@ -72,7 +66,7 @@ export const StartButton: React.FC<ButtonProps> = ({ text }) => {
 export const ClearSolutionButton: React.FC<ButtonProps> = ({ text }) => {
     const classes = useStyles({});
 
-    const { state, dispatch } = useContext<AppContext>(AppContext)
+    const { dispatch } = useContext<AppContext>(AppContext)
 
     return (
         <ListItem button key={text} onClick={() => dispatch({ status: 'clear-solution' })}>
@@ -92,7 +86,7 @@ export const ClearSolutionButton: React.FC<ButtonProps> = ({ text }) => {
 export const ClearGridButton: React.FC<ButtonProps> = ({ text }) => {
     const classes = useStyles({});
 
-    const { state, dispatch } = useContext<AppContext>(AppContext)
+    const { dispatch } = useContext<AppContext>(AppContext)
 
     return (
         <ListItem button key={text} onClick={() => dispatch({ status: 'clear-all' })} >

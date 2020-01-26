@@ -1,6 +1,6 @@
 /// <reference path="types/normalised.d.ts" />
 
-import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import Node from './Node'
 
 import './Grid.css';
