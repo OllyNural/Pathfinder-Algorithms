@@ -20,10 +20,6 @@ import { StartButton,
 } from './ActionButtons';
 import SettingsPanel from './settingsPanel';
 
-// import StartButton from './startButton'
-// import AlgorithmMenu from './algorithmMenu'
-// import SpeedSlider from './speedSlider'
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -173,56 +169,6 @@ const MenuNavigation: React.FC = () => {
       </Drawer>
     </div>
   );
-
-  // return (
-  //   <div className={classes.root}>
-  //     <CssBaseline />
-  //     <AppBar
-  //       position="fixed"
-  //       className={clsx(classes.appBar, {
-  //         [classes.appBarShift]: open,
-  //       })}
-  //     >
-        
-  //     </AppBar>
-  //     <Drawer
-  //       className={classes.drawer}
-  //       variant="persistent"
-  //       anchor="right"
-  //       open={open}
-  //       classes={{
-  //         paper: classes.drawerPaper,
-  //       }}
-  //     >
-  //       <Toolbar>
-  //         <Typography variant="h5" className={classes.title}>
-  //           Pathfinder Algorithms
-  //         </Typography>
-  //         {/* <div className={classes.toolbar} > */}
-  //           <StartButton />
-  //           {/* <Switch /> */}
-  //           <IconButton
-  //             color="inherit"
-  //             aria-label="open drawer"
-  //             onClick={handleDrawerOpen}
-  //             edge="end"
-  //             className={clsx(classes.menuButton, open && classes.hide)}
-  //           >
-  //             <MenuIcon />
-  //           </IconButton>
-  //         {/* </div> */}
-  //       </Toolbar>
-  //       <div className={classes.drawerHeader}>
-  //         <IconButton onClick={handleDrawerClose}>
-  //           {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-  //         </IconButton>
-  //       </div>
-  //       <Divider />
-  //       <AlgorithmMenu />
-  //       <SpeedSlider />
-  //     </Drawer>
-  //   </div>
-  // );
 }
 
 export default MenuNavigation

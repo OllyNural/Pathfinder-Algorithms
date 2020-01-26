@@ -1,27 +1,47 @@
 /// <reference path="../types/normalised.d.ts" />
 
 import React, { useContext, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
-import { Box, Typography, TextField } from '@material-ui/core';
+import { Box, Typography, TextField, Button } from '@material-ui/core';
 import AppContext from '../AppContext';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
-const useSwitchStyles = makeStyles({
-    root: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'left'
-    },
-    slideContainer: {
-        width: '80%',
-    },
-    milliseconds: {
-        textAlign: 'left',
-        fontSize: '14px'
-    }
-});
+import IconButton from '@material-ui/core/IconButton';
+
+const useSwitchStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'left'
+        },
+        slideContainer: {
+            textAlign: 'center',
+        },
+        slider: {
+            width: '90%',
+        },
+        milliseconds: {
+            fontSize: '16px',
+            textAlign: 'center',
+            lineHeight: '32px',
+        },
+        buttonContainer: {
+            fontSize: '16px',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: '-10px'
+        },
+        addRemoveButtons: {
+            padding: '6px',
+            height: '32px'
+        }
+    }));
 
 const SpeedSlider: React.FC = () => {
 
@@ -42,30 +62,29 @@ const SpeedSlider: React.FC = () => {
     const handleChangeCommitted = (event: React.ChangeEvent<{}>, value: number | number[]) => {
         if (typeof value === 'number') {
             setValue(value)
-            dispatch({renderSpeed: value})
+            dispatch({ renderSpeed: value })
         }
     }
 
-    // const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    //     console.log(event)
-    // }
-
     return (
-        <Box pt={5} className={classes.root} >
-            <Box className={classes.slideContainer} >
-                <Typography>
-                    Render speed
+        <Box className={classes.slideContainer} >
+            <Typography >
+                Render speed (ms)
                 </Typography>
-                <Slider 
-                    min={min}
-                    max={max}
-                    step={steps}
-                    defaultValue={value}
-                    onChange={handleChange} 
-                    onChangeCommitted={handleChangeCommitted}
-                />
-                <Typography className={classes.milliseconds}>{value}ms</Typography>
-            </Box>
+            <Slider
+                className={classes.slider}
+                min={min}
+                max={max}
+                step={steps}
+                defaultValue={value}
+                onChange={handleChange}
+                onChangeCommitted={handleChangeCommitted}
+            />
+            <div className={classes.buttonContainer}>
+                <IconButton className={classes.addRemoveButtons} ><RemoveIcon fontSize={'small'} /></IconButton>
+                <Typography className={classes.milliseconds}>{value}</Typography>
+                <IconButton className={classes.addRemoveButtons} ><AddIcon fontSize={'small'} /></IconButton>
+            </div>
         </Box>
     )
 }
