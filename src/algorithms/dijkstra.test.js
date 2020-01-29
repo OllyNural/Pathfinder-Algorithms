@@ -12,7 +12,7 @@ import {
 
 describe('dijkstra', () => {
     it('Should transform correctly', () => {
-        expect(dijkstra(data)).toEqual({ nodesTraversed: nodesTraversed, shortestPath: transformedDataShortestPathOutput })
+        expect(dijkstra(data, {})).toEqual({ nodesTraversed: nodesTraversed, shortestPath: transformedDataShortestPathOutput })
     })
 })
 

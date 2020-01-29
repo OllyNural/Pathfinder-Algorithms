@@ -6,11 +6,11 @@ import Divider from '@material-ui/core/Divider';
 import { Box } from '@material-ui/core';
 import AppContext from '../AppContext';
 import SpeedSlider from './speedSlider';
-import SettingsCheckbox from './settingsCheckbox'
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import DiagonalOptions from './diagonalOptions'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,11 +79,11 @@ export default function SettingsPanel() {
           <Typography variant={'h6'}>Options</Typography>
         </Box>
         <Box pl={2} mt={1} >
-          <SettingsCheckbox disabled={true} label={'Allow Diagonal'} />
+          <DiagonalOptions />
         </Box>
-        <Box pl={2} mt={1} >
+        {/* <Box pl={2} mt={1} >
           <SettingsCheckbox disabled={true} label={'Allow Bi-Directional'} />
-        </Box>
+        </Box> */}
         <Box pl={2} mt={1} >
           <SpeedSlider />
         </Box>

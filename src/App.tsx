@@ -16,6 +16,18 @@ const App: React.FC = () => {
     status: 'none',
     currentAlgorithm: () => {},
     renderSpeed: 25,
+    options: {
+      directions: {
+        north: true,
+        northeast: false,
+        east: true,
+        southeast: false,
+        south: true,
+        southwest: false,
+        west: true,
+        northwest: false,
+      }
+    }
   }
 
   const [state, dispatch] = useReducer(MainReducer, initialState);

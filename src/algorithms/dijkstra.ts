@@ -2,16 +2,26 @@
 /// <reference path="../types/dijkstra.d.ts" />
 import { input, output } from '../transformers/dijkstra'
 
-const dirs = [
-    (x: number, y: number) => ({ x: x - 1, y }), // North
-    (x: number, y: number) => ({ x, y: y + 1 }), // East
-    (x: number, y: number) => ({ x: x + 1, y }), // South
-    (x: number, y: number) => ({ x, y: y - 1 }), // West
-    // (x: number, y: number) => ({ x: x + 1, y: y - 1 }), 
-    // (x: number, y: number) => ({ x: x - 1, y: y - 1 }), 
-    // (x: number, y: number) => ({ x: x - 1, y: y + 1 }), 
-    // (x: number, y: number) => ({ x: x + 1, y: y + 1 }), 
-]
+const dirs = {
+    north: (x: number, y: number) => ({ x: x - 1, y }),
+    east: (x: number, y: number) => ({ x, y: y + 1 }),
+    south: (x: number, y: number) => ({ x: x + 1, y }),
+    west: (x: number, y: number) => ({ x, y: y - 1 }),
+    southwest: (x: number, y: number) => ({ x: x + 1, y: y - 1 }),
+    northwest: (x: number, y: number) => ({ x: x - 1, y: y - 1 }),
+    northeast: (x: number, y: number) => ({ x: x - 1, y: y + 1 }),
+    southeast: (x: number, y: number) => ({ x: x + 1, y: y + 1 }),
+}
+
+const getDirs = (directions: any) => {
+    const finalDirs: any[] = []
+
+    Object.entries(dirs).forEach(([key, value]) => {
+        if (directions[key]) finalDirs.push(value)
+    });
+
+    return finalDirs
+}
 
 const sortUnvisitedNodes = (first: Dijkstra, second: Dijkstra) => {
     if (first.distance > second.distance) return -1
@@ -39,7 +49,8 @@ const findShortestPath = (grid: Dijkstra[][]) => {
     return shortestPath.reverse()
 }
 
-const Dijkstra = (dirtyGrid: number[][]) => {
+const Dijkstra = (dirtyGrid: number[][], options: any) => {
+    const dirs = getDirs(options.directions)
     const grid: Dijkstra[][] = input(dirtyGrid)
     const unvisitedNodes: Dijkstra[] = []
     const nodesTraversed: Dijkstra[] = []

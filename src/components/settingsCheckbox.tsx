@@ -6,16 +6,20 @@ import { FormControlLabel, Checkbox } from '@material-ui/core';
 type settingsCheckboxProps = {
     label: string,
     disabled: boolean,
+    onChange: () => void,
+    checked: boolean,
 }
 
-const SettingsCheckbox: React.FC<settingsCheckboxProps> = ({ label, disabled }) => {
+const SettingsCheckbox: React.FC<settingsCheckboxProps> = ({ label, disabled, onChange, checked }) => {
     return (
         <FormControlLabel
             control={
                 <Checkbox
                     value="checkedB"
                     color="primary"
+                    checked={checked}
                     disabled={disabled}
+                    onChange={onChange}
                 />
             }
             label={label}
