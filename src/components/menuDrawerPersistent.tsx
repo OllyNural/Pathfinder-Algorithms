@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const MenuNavigation: React.FC = () => {
   const classes = useStyles({});
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const { dispatch } = useContext(AppContext)
 
