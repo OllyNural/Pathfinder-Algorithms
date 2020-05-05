@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -13,12 +13,16 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import SettingIcon from '@material-ui/icons/Settings';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import AppsIcon from '@material-ui/icons/Apps';
 
 import { StartButton,
   ClearGridButton,
   ClearSolutionButton
 } from './ActionButtons';
 import SettingsPanel from './settingsPanel';
+import { Button, Icon } from '@material-ui/core';
+import AppContext from '../AppContext';
 
 const drawerWidth = 240;
 
@@ -88,7 +92,9 @@ const useStyles = makeStyles((theme: Theme) =>
 const MenuNavigation: React.FC = () => {
   const classes = useStyles({});
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+
+  const { dispatch } = useContext(AppContext)
 
   const mainButtons = [
     {
@@ -138,6 +144,22 @@ const MenuNavigation: React.FC = () => {
             Pathy.io
             {/* <img src="https://s3.amazonaws.com/word-art/5e2ad4018eb33c71b4821df2.png" style={{ height: '100%' }} /> */}
           </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => dispatch({ perspective: 'topdown'})}
+                endIcon={<AppsIcon />}
+            >
+                Grid View
+            </Button>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => dispatch({ perspective: 'pov'})}
+                endIcon={<DirectionsRunIcon />}
+            >
+                Run The Track
+            </Button>
         </Toolbar>
       </AppBar>
       <Drawer

@@ -64,10 +64,10 @@ const Grid: React.FC = () => {
    * STATES
    */
   const [grid] = useState(tempGrid)
-  const [values, setValues] = useState(tempGrid);
   const [stats, setStats] = useState(tempStats);
   const [solutionTimeouts, setSolutionTimeouts] = useState<NodeJS.Timeout[]>([]);
-
+  
+  const [values, setValues] = useState(tempGrid);
   const valuesRef = useRef(values)
   useEffect(() => {
     valuesRef.current = values
@@ -125,6 +125,7 @@ const Grid: React.FC = () => {
   }, [status, currentAlgorithm, options])
 
   useEffect(() => {
+    dispatch({ currentGrid: tempGrid })
     dispatch({ currentAlgorithm: 'Dijkstra' })
   }, [])
 
@@ -192,6 +193,7 @@ const Grid: React.FC = () => {
     if (!nodesTraversed || !shortestPath) return
 
     setStats({ totalTime, numberOfNodes })
+    dispatch({ solution: { nodesTraversed, shortestPath } })
 
     nodesTraversed.forEach((e, i) => {
       const solutionTimeouts: NodeJS.Timeout[] = []
@@ -251,6 +253,7 @@ const Grid: React.FC = () => {
     setMovingStart(false)
     setMovingEnd(false)
     prevWallState = 1
+    dispatch({ currentGrid: valuesRef.current })
   }
 
   const handleHover = (x: number, y: number) => {

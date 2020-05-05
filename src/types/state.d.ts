@@ -1,3 +1,11 @@
+type Perspective = 'pov' | 'topdown';
+
+type NodeCell = {
+    value: number,
+    x: number,
+    y: number
+}
+
 declare type StateContext = {
     status: string,
     currentAlgorithm: any,
@@ -14,6 +22,12 @@ declare type StateContext = {
             northwest: boolean,
         },
     },
+    perspective: string,
+    currentGrid: number[][],
+    solution?: {
+        nodesTraversed: NodeCell[],
+        shortestPath: NodeCell[],
+    }
 };
 
 declare interface AppContext {
