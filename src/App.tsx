@@ -29,7 +29,7 @@ const App: React.FC = () => {
                 northwest: false,
             }
         },
-        perspective: 'topdown',
+        perspective: 'pov',
         currentGrid: [[0]],
         solution: undefined
     };

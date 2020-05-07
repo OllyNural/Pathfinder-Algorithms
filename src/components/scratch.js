@@ -2,6 +2,12 @@ export default 5;
 
 
 
+        
+// const width = worldMap.length * CELL_WIDTH;
+// const squareMidpoint = Math.sqrt(Math.pow(width,2) + Math.pow(width,2)) / 2
+// const angle = 60
+// const controlHeight = squareMidpoint * Math.tan(angle * Math.PI /180)
+
 // const onKeyDown = (event) => {
 //     switch (event.keyCode) {
 //         // Up
