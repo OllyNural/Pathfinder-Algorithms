@@ -141,17 +141,24 @@ const World: React.FC = () => {
     const PointerControls = (props: any) => {
         const controlsRef = useRef<PointerLockControls>();
         const { camera, gl } = useThree();
+        let moveForward = false;
+        let moveBackward = false;
+        let moveLeft = false;
+        let moveRight = false;
+        let prevTime = performance.now()
+        let velocity = new THREE.Vector3()
+        let direction = new THREE.Vector3()
 
         const handleLock = (event: any) => {
             if (controlsRef?.current?.isLocked) return
             console.log('locked')
+            controlsRef?.current?.connect()
         }
 
         useEffect(() => {
-            console.log('useEffect')
             document.addEventListener("keydown", handleKeyDown)
+            document.addEventListener("keyup", handleKeyUp)
             if (controlsRef !== undefined && controlsRef.current !== undefined) {
-                // controlsRef.current.target = new THREE.Vector3(worldMap.length / 2 * CELL_WIDTH, 0, worldMap.length / 2 * CELL_WIDTH)
                 controlsRef.current.addEventListener('lock', handleLock)
                 controlsRef.current.addEventListener('unlock', handleUnlock)
             }
@@ -170,15 +177,76 @@ const World: React.FC = () => {
                 controlsRef.current && controlsRef.current.connect()
                 setOrbit(false)
             }
+            switch ( event.keyCode ) {
+                case 38: // up
+                case 87: // w
+                    moveForward = true;
+                    break;
+                case 37: // left
+                case 65: // a
+                    moveLeft = true;
+                    break;
+                case 40: // down
+                case 83: // s
+                    moveBackward = true;
+                    break;
+                case 39: // right
+                case 68: // d
+                    moveRight = true;
+                    break; 
+            }
         }
 
+        const handleKeyUp = (event: any) => {
+            console.log('handleKeyUp')
+            switch ( event.keyCode ) {
+                case 38: // up
+                case 87: // w
+                    moveForward = false;
+                    break;
+                case 37: // left
+                case 65: // a
+                    moveLeft = false;
+                    break;
+                case 40: // down
+                case 83: // s
+                    moveBackward = false;
+                    break;
+                case 39: // right
+                case 68: // d
+                    moveRight = false;
+                    break;
+            }
+        }
+
+        // TODO - Add Throttle around lock and unlock events. Per 1second
         const handleUnlock = () => {
             console.log('unlocked')
             if (!controlsRef?.current?.isLocked) return
             setOrbit(true)
         }
 
-        // useFrame(() => console.log(controlsRef))
+        useFrame(() => {
+            if (controlsRef?.current?.isLocked) {
+                // This is our animation frame to update our character
+                const time = performance.now()
+                var delta = ( time - prevTime ) / 1000;
+
+                velocity.x -= velocity.x * 10.0 * delta;
+                velocity.z -= velocity.z * 10.0 * delta;
+
+                direction.z = Number( moveForward ) - Number( moveBackward );
+                direction.x = Number( moveRight ) - Number( moveLeft );
+                direction.normalize(); // this ensures consistent movements in all directions
+
+                if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
+                if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
+
+                controlsRef?.current?.moveForward(-velocity.x * delta)
+                controlsRef?.current?.moveRight(-velocity.z * delta)
+                prevTime = time;
+            }
+        })
 
         return (
             <pointerLockControls
@@ -214,21 +282,6 @@ const World: React.FC = () => {
     }))
 
     const sceneMapElements = mapElements.flat()
-
-    const Fallback = () => {
-        
-        console.log('falling back')
-
-        useEffect(() =>{
-            console.log('mounting')
-            return () => {
-                console.log('unmounting')
-            }
-        })
-        return (
-            <div style={{position: 'fixed', bottom: '150px', right: '150px', textAlign: 'center', color: 'white'}}>Loading...</div>
-        )
-    }
 
     return (
         <>
