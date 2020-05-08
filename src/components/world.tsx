@@ -149,12 +149,6 @@ const World: React.FC = () => {
         let velocity = new THREE.Vector3()
         let direction = new THREE.Vector3()
 
-        const handleLock = (event: any) => {
-            if (controlsRef?.current?.isLocked) return
-            console.log('locked')
-            controlsRef?.current?.connect()
-        }
-
         useEffect(() => {
             document.addEventListener("keydown", handleKeyDown)
             document.addEventListener("keyup", handleKeyUp)
@@ -169,10 +163,15 @@ const World: React.FC = () => {
             }
         })
 
+        useEffect(() => {
+            if (controlsRef?.current?.isLocked) {
+                camera.position.set(startIndex.y * CELL_WIDTH, CELL_HEIGHT * 0.75, startIndex.x * CELL_WIDTH)
+            }
+        })
+        
         const handleKeyDown = (event: any) => {
             console.log('handleKeyDown')
             if (event.code === 'Space') {
-                console.log('in event listener')
                 controlsRef.current && controlsRef.current.lock()
                 controlsRef.current && controlsRef.current.connect()
                 setOrbit(false)
@@ -180,52 +179,58 @@ const World: React.FC = () => {
             switch ( event.keyCode ) {
                 case 38: // up
                 case 87: // w
-                    moveForward = true;
-                    break;
+                moveForward = true;
+                break;
                 case 37: // left
                 case 65: // a
-                    moveLeft = true;
-                    break;
+                moveLeft = true;
+                break;
                 case 40: // down
                 case 83: // s
-                    moveBackward = true;
-                    break;
+                moveBackward = true;
+                break;
                 case 39: // right
                 case 68: // d
-                    moveRight = true;
-                    break; 
+                moveRight = true;
+                break; 
             }
         }
-
+        
         const handleKeyUp = (event: any) => {
             console.log('handleKeyUp')
             switch ( event.keyCode ) {
                 case 38: // up
                 case 87: // w
-                    moveForward = false;
-                    break;
+                moveForward = false;
+                break;
                 case 37: // left
                 case 65: // a
-                    moveLeft = false;
-                    break;
+                moveLeft = false;
+                break;
                 case 40: // down
                 case 83: // s
-                    moveBackward = false;
-                    break;
+                moveBackward = false;
+                break;
                 case 39: // right
                 case 68: // d
-                    moveRight = false;
-                    break;
+                moveRight = false;
+                break;
             }
         }
-
+        
+        const handleLock = (event: any) => {
+            if (controlsRef?.current?.isLocked) return
+            console.log('locked')
+            controlsRef?.current?.connect()
+        }
+        
         // TODO - Add Throttle around lock and unlock events. Per 1second
         const handleUnlock = () => {
             console.log('unlocked')
             if (!controlsRef?.current?.isLocked) return
             setOrbit(true)
         }
-
+        
         useFrame(() => {
             if (controlsRef?.current?.isLocked) {
                 // This is our animation frame to update our character
@@ -242,8 +247,8 @@ const World: React.FC = () => {
                 if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
                 if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
 
-                controlsRef?.current?.moveForward(-velocity.x * delta)
-                controlsRef?.current?.moveRight(-velocity.z * delta)
+                controlsRef?.current?.moveForward(-velocity.z * delta)
+                controlsRef?.current?.moveRight(-velocity.x * delta)
                 prevTime = time;
             }
         })
@@ -287,8 +292,8 @@ const World: React.FC = () => {
         <>
             {/* <Fade in={true}> */}
                 <Canvas style={{ backgroundColor: 'black' }} concurrent >
-                    <Controls enabled={orbit} />
-                    <PointerControls enabled={!orbit} />
+                    {orbit && <Controls />}
+                    <PointerControls enabled={!orbit}/>
                     <AmbientLight />
                     <pointLight distance={55} position={[startIndex.y * CELL_WIDTH, 5, startIndex.x * CELL_WIDTH]} color={startLight} intensity={1} />
                     {/* {endTarget && <spotLight lookAt={endTarget} position={[endIndex.y, 5, endIndex.x]} color={endLight} intensity={0.3} />} */}
