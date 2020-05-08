@@ -1,5 +1,5 @@
 /* tslint:disable:strictnullchecks */
-import React, { useMemo, useRef, useEffect, useContext, useState, useCallback } from "react";
+import React, { Suspense, useMemo, useRef, useEffect, useContext, useState, useCallback } from "react";
 import { Canvas, useThree, extend, useFrame, ReactThreeFiber } from 'react-three-fiber'
 import * as THREE from 'three'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -8,6 +8,8 @@ import { PointerLockControls } from "three/examples/jsm/controls/PointerLockCont
 import worldMap from './worldMap'
 import { Vector3, Object3D, EdgesGeometry } from "three";
 import AppContext from "../AppContext";
+import { OrbitInstructions } from './ControlsInstructions'
+import { Fade } from "@material-ui/core";
 
 extend({ OrbitControls, PointerLockControls });
 declare global {
@@ -34,6 +36,7 @@ const COLOUR_MAP: ColorType = [
     { fill: 0x000000, wireframe: 0x474747 },
     // Wall
     { fill: 0x000000, wireframe: 0xD400D4 },
+    // { fill: 0x000000, wireframe: 0xff00a0 },
     // Shortest Path
     { fill: 0x000000, wireframe: 0x00FFFF },
     // Start
@@ -84,16 +87,15 @@ const World: React.FC = () => {
     const Controls = (props: any) => {
         const controlsRef = useRef<OrbitControls>();
         const { camera, gl } = useThree();
-
         const width = worldMap.length * CELL_WIDTH;
 
         // Working out arc for position x and z
-        const arcAngle = 10
+        const arcAngle = 30
         const startX = 0
         const startY = 0
         const centerX = width/2
         const centerY = width/2
-        const radius = Math.sqrt(Math.pow(35, 2) + Math.pow(35, 2)) / 2
+        const radius = Math.sqrt(Math.pow(width/2, 2) + Math.pow(width/2, 2)) / 2
 
         const startAngle = Math.atan2(startY - centerY, startX - centerX)
         const EndX = centerX + radius * Math.cos(startAngle + arcAngle)
@@ -107,7 +109,6 @@ const World: React.FC = () => {
 
         useEffect(() => {
             camera.position.set(-EndX, controlHeight, -EndY)
-            // camera.position.set(0, controlHeight, 0)
             controlsRef?.current?.update()
         })
 
@@ -137,38 +138,47 @@ const World: React.FC = () => {
         );
     };
 
-    console.log(orbit)
-
     const PointerControls = (props: any) => {
         const controlsRef = useRef<PointerLockControls>();
         const { camera, gl } = useThree();
 
-        useFrame(() => {
-            const handleLock = () => {
-                if (controlsRef?.current?.isLocked) return
-                console.log('locked')
-            }
-    
-            const handleUnlock = () => {
-                console.log('unlocked')
-                if (!controlsRef?.current?.isLocked) return
-                setOrbit(true)
-            }
+        const handleLock = (event: any) => {
+            if (controlsRef?.current?.isLocked) return
+            console.log('locked')
+        }
 
+        useEffect(() => {
+            console.log('useEffect')
+            document.addEventListener("keydown", handleKeyDown)
             if (controlsRef !== undefined && controlsRef.current !== undefined) {
                 // controlsRef.current.target = new THREE.Vector3(worldMap.length / 2 * CELL_WIDTH, 0, worldMap.length / 2 * CELL_WIDTH)
                 controlsRef.current.addEventListener('lock', handleLock)
                 controlsRef.current.addEventListener('unlock', handleUnlock)
-                document.addEventListener("keydown", (event) => {
-                    if (event.code === 'Space') {
-                        console.log('in event listener')
-                        controlsRef.current && controlsRef.current.lock()
-                        controlsRef.current && controlsRef.current.connect()
-                        setOrbit(false)
-                    }
-                })
+            }
+            return () => {
+                document.removeEventListener("keydown", handleKeyDown)
+                controlsRef.current?.removeEventListener('lock', handleLock)
+                controlsRef.current?.removeEventListener('unlock', handleUnlock)
             }
         })
+
+        const handleKeyDown = (event: any) => {
+            console.log('handleKeyDown')
+            if (event.code === 'Space') {
+                console.log('in event listener')
+                controlsRef.current && controlsRef.current.lock()
+                controlsRef.current && controlsRef.current.connect()
+                setOrbit(false)
+            }
+        }
+
+        const handleUnlock = () => {
+            console.log('unlocked')
+            if (!controlsRef?.current?.isLocked) return
+            setOrbit(true)
+        }
+
+        // useFrame(() => console.log(controlsRef))
 
         return (
             <pointerLockControls
@@ -205,16 +215,37 @@ const World: React.FC = () => {
 
     const sceneMapElements = mapElements.flat()
 
+    const Fallback = () => {
+        
+        console.log('falling back')
+
+        useEffect(() =>{
+            console.log('mounting')
+            return () => {
+                console.log('unmounting')
+            }
+        })
+        return (
+            <div style={{position: 'fixed', bottom: '150px', right: '150px', textAlign: 'center', color: 'white'}}>Loading...</div>
+        )
+    }
+
     return (
-        <Canvas style={{ backgroundColor: 'black' }} >
-            <Controls enabled={orbit} />
-            <PointerControls enabled={!orbit} />
-            <AmbientLight />
-            <pointLight distance={55} position={[startIndex.y * CELL_WIDTH, 5, startIndex.x * CELL_WIDTH]} color={startLight} intensity={1} />
-            {/* {endTarget && <spotLight lookAt={endTarget} position={[endIndex.y, 5, endIndex.x]} color={endLight} intensity={0.3} />} */}
-            <pointLight distance={25} position={[endIndex.y * CELL_WIDTH, 5, endIndex.x * CELL_WIDTH]} color={endLight} intensity={1} />
-            {sceneMapElements}
-        </Canvas>
+        <>
+            {/* <Fade in={true}> */}
+                <Canvas style={{ backgroundColor: 'black' }} concurrent >
+                    <Controls enabled={orbit} />
+                    <PointerControls enabled={!orbit} />
+                    <AmbientLight />
+                    <pointLight distance={55} position={[startIndex.y * CELL_WIDTH, 5, startIndex.x * CELL_WIDTH]} color={startLight} intensity={1} />
+                    {/* {endTarget && <spotLight lookAt={endTarget} position={[endIndex.y, 5, endIndex.x]} color={endLight} intensity={0.3} />} */}
+                    <pointLight distance={25} position={[endIndex.y * CELL_WIDTH, 5, endIndex.x * CELL_WIDTH]} color={endLight} intensity={1} />
+                    {sceneMapElements}
+                    {/* <PointerInstructions /> */}
+                </Canvas>
+            {/* </Fade> */}
+            <OrbitInstructions />
+        </>
     )
 }
 

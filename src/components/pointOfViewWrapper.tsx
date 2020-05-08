@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import ReactTransitionGroup from 'react-addons-transition-group'
 
 import MenuDrawerPersistent from './menuDrawerPersistent'
 import World from './world'
