@@ -4,8 +4,6 @@ import React, { useReducer } from 'react';
 
 import './App.css';
 
-// import MenuDrawerPersistent from './components/menuDrawerPersistent'
-// import Grid from './Grid'
 import PointOfViewWrapper from './components/pointOfViewWrapper'
 
 import AppContext from './AppContext'

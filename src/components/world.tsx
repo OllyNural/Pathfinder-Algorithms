@@ -1,15 +1,14 @@
-/* tslint:disable:strictnullchecks */
-import React, { Suspense, useMemo, useRef, useEffect, useContext, useState, useCallback } from "react";
+import React, { useMemo, useRef, useEffect, useContext, useState } from "react";
 import { Canvas, useThree, extend, useFrame, ReactThreeFiber } from 'react-three-fiber'
 import * as THREE from 'three'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 
-import worldMap from './worldMap'
-import { Vector3, Object3D, EdgesGeometry } from "three";
+// import worldMap from './worldMap'
 import AppContext from "../AppContext";
 import { OrbitInstructions } from './ControlsInstructions'
-import { Fade } from "@material-ui/core";
+
+import { transformGrid } from '../utils'
 
 extend({ OrbitControls, PointerLockControls });
 declare global {
@@ -82,6 +81,8 @@ const World: React.FC = () => {
         solution
     } = state
 
+    const worldMap = transformGrid(currentGrid)
+
     const [orbit, setOrbit] = useState(true);
 
     const Controls = (props: any) => {
@@ -116,7 +117,7 @@ const World: React.FC = () => {
 
         useFrame(() => {
             if (controlsRef !== undefined && controlsRef.current !== undefined) {
-                controlsRef.current.target = new THREE.Vector3(worldMap.length / 2 * CELL_WIDTH, 0, worldMap.length / 2 * CELL_WIDTH)
+                controlsRef.current.target = new THREE.Vector3(worldMap[0].length / 2 * CELL_WIDTH, 0, worldMap.length / 2 * CELL_WIDTH)
                 controlsRef?.current?.update()
             }
         })
@@ -131,7 +132,7 @@ const World: React.FC = () => {
                 enablePan={false}
                 enableDamping={true}
                 dampingFactor={0.07}
-                maxDistance={100}
+                maxDistance={1000}
                 minDistance={5}
                 maxPolarAngle={Math.PI / 3}
             />
@@ -170,7 +171,6 @@ const World: React.FC = () => {
         })
         
         const handleKeyDown = (event: any) => {
-            console.log('handleKeyDown')
             if (event.code === 'Space') {
                 controlsRef.current && controlsRef.current.lock()
                 controlsRef.current && controlsRef.current.connect()
@@ -197,7 +197,6 @@ const World: React.FC = () => {
         }
         
         const handleKeyUp = (event: any) => {
-            console.log('handleKeyUp')
             switch ( event.keyCode ) {
                 case 38: // up
                 case 87: // w
@@ -220,13 +219,11 @@ const World: React.FC = () => {
         
         const handleLock = (event: any) => {
             if (controlsRef?.current?.isLocked) return
-            console.log('locked')
             controlsRef?.current?.connect()
         }
         
         // TODO - Add Throttle around lock and unlock events. Per 1second
         const handleUnlock = () => {
-            console.log('unlocked')
             if (!controlsRef?.current?.isLocked) return
             setOrbit(true)
         }
