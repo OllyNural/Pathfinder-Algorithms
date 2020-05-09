@@ -292,9 +292,9 @@ const World: React.FC = () => {
                     {orbit && <Controls />}
                     <PointerControls enabled={!orbit}/>
                     <AmbientLight />
-                    <pointLight distance={55} position={[startIndex.y * CELL_WIDTH, 5, startIndex.x * CELL_WIDTH]} color={startLight} intensity={1} />
+                    <pointLight distance={55} position={[(startIndex.y * CELL_WIDTH) + (CELL_WIDTH / 2), 5, (startIndex.x * CELL_WIDTH) + (CELL_WIDTH / 2)]} color={startLight} intensity={1} />
                     {/* {endTarget && <spotLight lookAt={endTarget} position={[endIndex.y, 5, endIndex.x]} color={endLight} intensity={0.3} />} */}
-                    <pointLight distance={25} position={[endIndex.y * CELL_WIDTH, 5, endIndex.x * CELL_WIDTH]} color={endLight} intensity={1} />
+                    <pointLight distance={25} position={[(endIndex.y * CELL_WIDTH) + (CELL_WIDTH / 2), 5, (endIndex.x * CELL_WIDTH) + (CELL_WIDTH / 2)]} color={endLight} intensity={1} />
                     {sceneMapElements}
                     {/* <PointerInstructions /> */}
                 </Canvas>

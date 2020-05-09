@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import clsx from 'clsx';
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -97,6 +97,10 @@ const MenuNavigation: React.FC = () => {
 
     const { state: { perspective }, dispatch } = useContext(AppContext)
 
+    useEffect(() => {
+        if (perspective === 'pov') setOpen(false)
+    }, [perspective, setOpen])
+
     const mainButtons = [
         {
             Button: StartButton,
@@ -130,7 +134,7 @@ const MenuNavigation: React.FC = () => {
                 })}
             >
                 <Toolbar>
-                    <IconButton
+                    {perspective === 'topdown' && <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
@@ -140,7 +144,7 @@ const MenuNavigation: React.FC = () => {
                         })}
                     >
                         <MenuIcon />
-                    </IconButton>
+                    </IconButton>}
                     <Typography variant="h6" noWrap>
                         Pathy.io
             {/* <img src="https://s3.amazonaws.com/word-art/5e2ad4018eb33c71b4821df2.png" style={{ height: '100%' }} /> */}
